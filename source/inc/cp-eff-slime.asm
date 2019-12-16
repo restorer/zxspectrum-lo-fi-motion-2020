@@ -4,15 +4,15 @@
 
 render
     ld de,@rend.vscreen-32
-    ld bc,(32*256)+%00111100
+    ld bc,(32*256)+#0f
 
 .fill
-    call @math.random : and c
+    call @math.random_u8 : and c
     ld (de),a : inc e
     djnz .fill
 
     ld ix,@rend.vscreen+31*32+31
-    ld bc,(32*256)+%00111100
+    ld bc,(32*256)+#0f
 
 .loop
     dup 31

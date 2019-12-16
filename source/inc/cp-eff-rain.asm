@@ -16,12 +16,12 @@ render
     ld b,32
 
 .fill
-    call @math.random : ld c,a
+    call @math.random_u8 : ld c,a
 
-    and %11000111 : jp z,1F
+    and %11110001 : jp z,1F
     xor a : jp 2F
 
-1   ld a,c : and %00111000
+1   ld a,c : and #0f
 
 2   ld (de),a : inc e
     djnz .fill

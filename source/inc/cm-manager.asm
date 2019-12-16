@@ -18,17 +18,31 @@ init
 ;-----------------------------------------------------------------------------------------------------------------------
 
 run
-    ; ld a,1 : ld (@sys.is_music_played),a
+    ld a,1 : ld (@sys.is_music_played),a
 
 loop
     halt
+
     call @rend.render
     ifdef _BORDERMETER : ld a,2 : out (#fe),a : endif
 
-    ; call @eff_fire.render
-    ; call @eff_rain.render
-    call @eff_slime.render
+    if @bank_code : ld a,@bank_code : else : xor a : endif
+    call @sys.swap
 
+    ld a,(ticks+1)
+
+    and 3 : jr nz,1F
+    call @eff_fire.render : jr next
+
+1   dec a : jr nz,2F
+    call @eff_rain.render : jr next
+
+2   dec a : jr nz,3F
+    call @eff_slime.render : jr next
+
+3   call @eff_interp.render
+
+next
     ifdef _BORDERMETER : xor a : out (#fe),a : endif
     jp loop
 
@@ -36,13 +50,21 @@ loop
 
 on_int_pre
     ifdef _BORDERMETER : ld a,1 : out (#fe),a : endif
-    ret
+
+    ld a,(@sys.bank) : ld (on_int_post.bank),a
+    if @bank_code : ld a,@bank_code : else : xor a : endif
+    jp @sys.swap
 
 on_note
     ret
 
 on_int_post
-    ret
+    ld hl,(ticks) : inc hl : ld (ticks),hl
+
+    ld a,0
+.bank equ $-1
+
+    jp @sys.swap
 
 ;-----------------------------------------------------------------------------------------------------------------------
 

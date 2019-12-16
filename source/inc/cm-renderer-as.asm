@@ -5,26 +5,26 @@
     org (($ + 255) / 256) * 256
 
 ink_tab
-    .8 db (#40 or #00)
-    .8 db (#40 or #01)
-    .8 db (#40 or #02)
-    .8 db (#40 or #03)
-    .8 db (#40 or #04)
-    .8 db (#40 or #05)
-    .8 db (#40 or #06)
-    .8 db (#40 or #07)
-    .192 db (#40 or #07)
+    .2 db (#40 or #00)
+    .2 db (#40 or #01)
+    .2 db (#40 or #02)
+    .2 db (#40 or #03)
+    .2 db (#40 or #04)
+    .2 db (#40 or #05)
+    .2 db (#40 or #06)
+    .2 db (#40 or #07)
+    .240 db (#40 or #07)
 
 paper_tab
-    .8 db (#40 or #00)
-    .8 db (#40 or #08)
-    .8 db (#40 or #10)
-    .8 db (#40 or #18)
-    .8 db (#40 or #20)
-    .8 db (#40 or #28)
-    .8 db (#40 or #30)
-    .8 db (#40 or #38)
-    .192 db (#40 or #38)
+    .2 db (#40 or #00)
+    .2 db (#40 or #08)
+    .2 db (#40 or #10)
+    .2 db (#40 or #18)
+    .2 db (#40 or #20)
+    .2 db (#40 or #28)
+    .2 db (#40 or #30)
+    .2 db (#40 or #38)
+    .240 db (#40 or #38)
 
     display "ink_tab = ", ink_tab
     display "paper_tab = ", paper_tab
