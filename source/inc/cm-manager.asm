@@ -21,14 +21,6 @@ run
     xor a : ld (on_int.is_inactive),a
 
 loop
-    halt
-
-    ld a,(@sys.swap.or_with) : xor 8 : ld (@sys.swap.or_with),a
-    and 8 : rrca : rrca : xor 7 : call @sys.swap
-    call @rend.render
-
-    ifdef _BORDERMETER : ld a,2 : out (#fe),a : endif
-
     ld hl,(ticks)
     ld bc,(next_ticks)
     and a : sbc hl,bc : jp c,.render_effect
@@ -62,6 +54,14 @@ loop
 .effect_ptr equ $-2
 
     ifdef _BORDERMETER : xor a : out (#fe),a : endif
+
+    halt
+
+    ld a,(@sys.swap.or_with) : xor 8 : ld (@sys.swap.or_with),a
+    and 8 : rrca : rrca : xor 7 : call @sys.swap
+    call @rend.render
+
+    ifdef _BORDERMETER : ld a,2 : out (#fe),a : endif
     jp loop
 
 ;-----------------------------------------------------------------------------------------------------------------------
