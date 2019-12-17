@@ -134,9 +134,9 @@ interp_line
 ; USE:
 ;   hl
 get_point
-    ld h,high @data.costab : ld l,a
+    ld h,high @data.sintab : ld l,a
     ld a,(hl)
-    rrca : add a,64 : rrca : rrca : rrca : and #0f
+    rrca : rrca : rrca : rrca : and #0f
     ret
 
 ;-----------------------------------------------------------------------------------------------------------------------

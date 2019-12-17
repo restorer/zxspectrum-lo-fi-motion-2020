@@ -29,11 +29,12 @@ loop
     if @bank_code : ld a,@bank_code : else : xor a : endif
     call @sys.swap
 
-    call @eff_fire.render
+    ; call @eff_fire.render
     ; call @eff_rain.render
     ; call @eff_slime.render
     ; call @eff_interp.render
     ; call @eff_raskolbas.render
+    call @eff_plasma.render
 
 next
     ifdef _BORDERMETER : xor a : out (#fe),a : endif

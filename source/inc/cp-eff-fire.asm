@@ -14,7 +14,7 @@ config equ render.config
 render
     ld de,@rend.vscreen+32*32
 
-    ld bc,(32*256)+cfg_strength_4
+    ld bc,(32*256)+cfg_strength_3
 .config equ $-2
 
 .fill

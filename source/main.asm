@@ -36,6 +36,7 @@
     include "inc/cp-eff-slime.asm"
     include "inc/cp-eff-interp.asm"
     include "inc/cp-eff-raskolbas.asm"
+    include "inc/cp-eff-plasma.asm"
 
 @bank_0_last
     include "inc/vp-pt3player.asm"
