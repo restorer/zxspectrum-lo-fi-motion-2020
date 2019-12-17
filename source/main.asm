@@ -29,8 +29,6 @@
     incbin "data/music.pt3"
 
     include "inc/cp-pt3player-as.asm"
-    include "inc/cp-math.asm"
-    include "inc/cp-data.asm"
     include "inc/cp-eff-fire.asm"
     include "inc/cp-eff-rain.asm"
     include "inc/cp-eff-slime.asm"
@@ -62,6 +60,8 @@
 
     include "inc/cm-system.asm"
     include "inc/cm-manager.asm"
+    include "inc/cm-math.asm"
+    include "inc/cm-data.asm"
     include "inc/cm-renderer-as.asm"
 
 @data

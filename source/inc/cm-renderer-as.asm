@@ -4,19 +4,7 @@
 
     org (($ + 255) / 256) * 256
 
-palette_ink
-    .2 db (#40 or #00)
-    .2 db (#40 or #01)
-    .2 db (#40 or #02)
-    .2 db (#40 or #03)
-    .2 db (#40 or #04)
-    .2 db (#40 or #05)
-    .2 db (#40 or #06)
-    .2 db (#40 or #07)
-    .120 db (#40 or #07)
-    .120 db #40
-
-palette_paper
+palette_low
     .2 db (#40 or #00)
     .2 db (#40 or #08)
     .2 db (#40 or #10)
@@ -28,21 +16,51 @@ palette_paper
     .120 db (#40 or #38)
     .120 db #40
 
-    display "palette_ink = ", palette_ink
-    display "palette_paper = ", palette_paper
+    .2 db (#40 or #00)
+    .2 db (#40 or #01)
+    .2 db (#40 or #02)
+    .2 db (#40 or #03)
+    .2 db (#40 or #04)
+    .2 db (#40 or #05)
+    .2 db (#40 or #06)
+    .2 db (#40 or #07)
+    .120 db (#40 or #07)
+    .120 db #40
+
+palette_high
+    .32 db (#40 or #00)
+    .32 db (#40 or #08)
+    .32 db (#40 or #10)
+    .32 db (#40 or #18)
+    .32 db (#40 or #20)
+    .32 db (#40 or #28)
+    .32 db (#40 or #30)
+    .32 db (#40 or #38)
+
+    .32 db (#40 or #00)
+    .32 db (#40 or #01)
+    .32 db (#40 or #02)
+    .32 db (#40 or #03)
+    .32 db (#40 or #04)
+    .32 db (#40 or #05)
+    .32 db (#40 or #06)
+    .32 db (#40 or #07)
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
     ld lx,16
-
     ld hl,vscreen
-    ld d,high palette_paper
+
+    ld d,high palette_low
+.palette equ $-1
+
+    ld a,d
     ld bc,33
     exx
 
     ld bc,#5800+4*32
-    ld h,high palette_ink
+    inc a : ld h,a
     ld de,vscreen+32
 
 .loop

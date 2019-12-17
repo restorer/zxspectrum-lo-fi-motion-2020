@@ -22,6 +22,8 @@ config equ interp_line.config
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
+    ld a,high @rend.palette_low : ld (@rend.render.palette),a
+
     ld a,tl_point_initial
 .tl_point equ $-1
 

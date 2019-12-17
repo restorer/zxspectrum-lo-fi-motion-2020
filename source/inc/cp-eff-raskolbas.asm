@@ -4,14 +4,15 @@
 
 line_color equ 15
 
-cfg_strength_1 equ 1
-cfg_strength_2 equ 2
-cfg_strength_3 equ 3
-cfg_strength_4 equ 7
-
 cfg_vline equ 1
 cfg_hline equ 2
 cfg_box   equ 4
+
+cfg_strength_1 equ cfg_vline
+cfg_strength_2 equ cfg_hline
+cfg_strength_3 equ cfg_vline or cfg_box
+cfg_strength_4 equ cfg_hline or cfg_box
+cfg_strength_5 equ cfg_vline or cfg_hline or cfg_box
 
 config equ render.config
 

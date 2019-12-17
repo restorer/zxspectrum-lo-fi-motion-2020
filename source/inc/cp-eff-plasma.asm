@@ -2,20 +2,26 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
+cfg_strength_1 equ %11000000
+cfg_strength_2 equ %11110000
+
+config equ render.config
+
+;-----------------------------------------------------------------------------------------------------------------------
+
 render
+    ld a,high @rend.palette_high : ld (@rend.render.palette),a
+
     ld ix,@rend.vscreen
     ld h,high @data.sintab : ld d,h
 
     exx
     ld h,high @data.sintab : ld d,h
 
-    ld l,5
-.param_1 equ $-1
+    ld a,(@mgr.ticks) : ld l,a
+    ld a,(@mgr.ticks) : add a,a : ld e,a
 
-    ld e,9
-.param_2 equ $-1
-
-    ld b,32
+    ld bc,32*256+4
 
 .loop_rows
     ld a,(hl) : exx : ld l,a : exx
@@ -24,22 +30,21 @@ render
 
 .loop_cols
     ld a,(de) : add a,(hl)
-    sub l : add a,e
     ld c,l : ld l,a : ld a,(hl) : ld l,c
 
-    rrca : rrca : rrca : rrca : and #0f
+    and cfg_strength_2
+.config equ $-1
+
     ld (ix),a : inc ix
 
-    dec l : dec l
+    ld a,l : add a,8 : ld l,a
     ld a,e : sub 4 : ld e,a
     djnz .loop_cols
 
     exx
-    inc l : inc l : inc e
+    ld a,l : add a,-2 : ld l,a
+    inc e : inc e
     djnz .loop_rows
-
-    ld a,(.param_1) : add a,2 : ld (.param_1),a
-    ld a,(.param_2) : add a,4 : ld (.param_2),a
 
     ret
 

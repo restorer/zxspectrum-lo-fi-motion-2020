@@ -12,6 +12,7 @@ config equ render.config
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
+    ld a,high @rend.palette_low : ld (@rend.render.palette),a
     ld de,@rend.vscreen+32*32
 
     ld bc,(32*256)+cfg_strength_3
