@@ -2,9 +2,21 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
+cfg_strength_1 equ %00000100
+cfg_strength_2 equ %00001000
+cfg_strength_3 equ %00001111
+cfg_strength_4 equ %00011111
+
+config equ render.config
+
+;-----------------------------------------------------------------------------------------------------------------------
+
 render
     ld de,@rend.vscreen-32
-    ld bc,(32*256)+#0f
+
+    ld bc,(32*256)+cfg_strength_3
+.config equ $-2
+
 
 .fill
     call @math.random_u8 : and c
@@ -12,7 +24,7 @@ render
     djnz .fill
 
     ld ix,@rend.vscreen+31*32+31
-    ld bc,(32*256)+#0f
+    ld bc,32*256+31
 
 .loop
     dup 31

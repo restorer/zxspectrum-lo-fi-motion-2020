@@ -7,10 +7,17 @@ bl_point_initial    equ 123
 tr_point_initial    equ 67
 br_point_initial    equ 12
 
-tl_point_add        equ 2
-bl_point_add        equ 3
+tl_point_add        equ 1
+bl_point_add        equ 2
 tr_point_add        equ 4
-br_point_add        equ 1
+br_point_add        equ 8
+
+cfg_strength_1 equ %00000011
+cfg_strength_2 equ %00000101
+cfg_strength_3 equ %00001101
+cfg_strength_4 equ %00001111
+
+config equ interp_line.config
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
@@ -109,12 +116,15 @@ interp_line
     ex de,hl
     pop hl
 
+    ld c,cfg_strength_4
+.config equ $-1
+
     dup 31
-        ld a,h : ld (ix),a
+        ld a,h : and c : ld (ix),a
         add hl,de : inc lx
     edup
 
-    ld a,h : ld (ix),a
+    ld a,h : and c : ld (ix),a
     inc ix : ret
 
 ; IN:

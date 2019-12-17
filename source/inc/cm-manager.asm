@@ -29,18 +29,11 @@ loop
     if @bank_code : ld a,@bank_code : else : xor a : endif
     call @sys.swap
 
-    ld a,(ticks+1)
-
-    and 3 : jr nz,1F
-    call @eff_fire.render : jr next
-
-1   dec a : jr nz,2F
-    call @eff_rain.render : jr next
-
-2   dec a : jr nz,3F
-    call @eff_slime.render : jr next
-
-3   call @eff_interp.render
+    call @eff_fire.render
+    ; call @eff_rain.render
+    ; call @eff_slime.render
+    ; call @eff_interp.render
+    ; call @eff_raskolbas.render
 
 next
     ifdef _BORDERMETER : xor a : out (#fe),a : endif

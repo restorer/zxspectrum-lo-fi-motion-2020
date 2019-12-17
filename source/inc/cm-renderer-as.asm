@@ -4,7 +4,7 @@
 
     org (($ + 255) / 256) * 256
 
-ink_tab
+palette_ink
     .2 db (#40 or #00)
     .2 db (#40 or #01)
     .2 db (#40 or #02)
@@ -13,9 +13,10 @@ ink_tab
     .2 db (#40 or #05)
     .2 db (#40 or #06)
     .2 db (#40 or #07)
-    .240 db (#40 or #07)
+    .120 db (#40 or #07)
+    .120 db #40
 
-paper_tab
+palette_paper
     .2 db (#40 or #00)
     .2 db (#40 or #08)
     .2 db (#40 or #10)
@@ -24,10 +25,11 @@ paper_tab
     .2 db (#40 or #28)
     .2 db (#40 or #30)
     .2 db (#40 or #38)
-    .240 db (#40 or #38)
+    .120 db (#40 or #38)
+    .120 db #40
 
-    display "ink_tab = ", ink_tab
-    display "paper_tab = ", paper_tab
+    display "palette_ink = ", palette_ink
+    display "palette_paper = ", palette_paper
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
@@ -35,12 +37,12 @@ render
     ld lx,16
 
     ld hl,vscreen
-    ld d,high paper_tab
+    ld d,high palette_paper
     ld bc,33
     exx
 
     ld bc,#5800+4*32
-    ld h,high ink_tab
+    ld h,high palette_ink
     ld de,vscreen+32
 
 .loop
