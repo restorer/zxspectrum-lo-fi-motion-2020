@@ -2,7 +2,7 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
-line_color equ 15
+line_color equ 31
 
 cfg_vline equ 1
 cfg_hline equ 2
@@ -20,18 +20,18 @@ config equ render.config
 
 render
     ld hl,@rend.vscreen
-    ld bc,32*256
+    ld b,32
 
 .fade
     dup 31
-        dec (hl) : jp p,1F
-        ld (hl),c
-1       inc l
+        ld a,(hl) : sub 2 : jp p,1F
+        xor a
+1       ld (hl),a : inc l
     edup
 
-    dec (hl) : jp p,1F
-    ld (hl),c
-1   inc hl
+    ld a,(hl) : sub 2 : jp p,1F
+    xor a
+1   ld (hl),a : inc hl
 
     dec b : jp nz,.fade
 
@@ -71,7 +71,7 @@ render
 .no_hline
     ld a,(.config) : and cfg_box : ret z
 
-    call @math.random_u8 : ld c,a : and %01100000 : ret nz
+    call @math.random_u8 : ld c,a : and %11100000 : ret nz
     ld a,c : and #0f : inc a : ld b,a : ld (.box_width),a
 
     call @math.random_u8 : and #0f : inc a : ld c,a

@@ -2,16 +2,14 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
-cfg_strength_1 equ %11000000
-cfg_strength_2 equ %11110000
+cfg_strength_1 equ %00011000
+cfg_strength_2 equ %00011111
 
 config equ render.config
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld a,high @rend.palette_high : ld (@rend.render.palette),a
-
     ld ix,@rend.vscreen
     ld h,high @data.sintab : ld d,h
 
@@ -31,6 +29,7 @@ render
 .loop_cols
     ld a,(de) : add a,(hl)
     ld c,l : ld l,a : ld a,(hl) : ld l,c
+    rrca : rrca : rrca
 
     and cfg_strength_2
 .config equ $-1

@@ -2,42 +2,21 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
-tl_point_initial    equ 43
-bl_point_initial    equ 123
-tr_point_initial    equ 67
-br_point_initial    equ 12
-
-tl_point_add        equ 1
-bl_point_add        equ 2
-tr_point_add        equ 4
-br_point_add        equ 8
-
-cfg_strength_1 equ %00000011
-cfg_strength_2 equ %00000101
-cfg_strength_3 equ %00001101
-cfg_strength_4 equ %00001111
+cfg_strength_1 equ %00000111
+cfg_strength_2 equ %00001111
+cfg_strength_3 equ %00011111
 
 config equ interp_line.config
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld a,high @rend.palette_low : ld (@rend.render.palette),a
-
-    ld a,tl_point_initial
-.tl_point equ $-1
-
-    add a,tl_point_add : ld (.tl_point),a
-
+    ld a,(@mgr.ticks)
     call get_point
     ld d,a : ld e,0
     ld (interp.left_pt),de
 
-    ld a,bl_point_initial
-.bl_point equ $-1
-
-    add a,bl_point_add : ld (.bl_point),a
-
+    ld a,(@mgr.ticks) : add a,a
     call get_point
     ld h,a : ld l,e
 
@@ -47,20 +26,12 @@ render
 
     ;;;;
 
-    ld a,tr_point_initial
-.tr_point equ $-1
-
-    add a,tr_point_add : ld (.tr_point),a
-
+    ld a,(@mgr.ticks) : .2 add a,a
     call get_point
     ld d,a : ld e,0
     ld (interp.right_pt),de
 
-    ld a,br_point_initial
-.br_point equ $-1
-
-    add a,br_point_add : ld (.br_point),a
-
+    ld a,(@mgr.ticks) : .3 add a,a
     call get_point
     ld h,a : ld l,e
 
@@ -118,7 +89,7 @@ interp_line
     ex de,hl
     pop hl
 
-    ld c,cfg_strength_4
+    ld c,cfg_strength_3
 .config equ $-1
 
     dup 31
@@ -138,7 +109,7 @@ interp_line
 get_point
     ld h,high @data.sintab : ld l,a
     ld a,(hl)
-    rrca : rrca : rrca : rrca : and #0f
+    rrca : rrca : rrca : and 31
     ret
 
 ;-----------------------------------------------------------------------------------------------------------------------

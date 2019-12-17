@@ -18,77 +18,102 @@ init
 ;-----------------------------------------------------------------------------------------------------------------------
 
 run
-    ld a,1 : ld (@sys.is_music_played),a
+    xor a : ld (on_int.is_inactive),a
 
 loop
     halt
 
+    ld a,(@sys.swap.or_with) : xor 8 : ld (@sys.swap.or_with),a
+    and 8 : rrca : rrca : xor 7 : call @sys.swap
     call @rend.render
+
     ifdef _BORDERMETER : ld a,2 : out (#fe),a : endif
 
-    ld a,(ticks+1) : and 15
+    ld hl,(ticks)
+    ld bc,(next_ticks)
+    and a : sbc hl,bc : jp c,.render_effect
 
-    add a,a : ld l,a : add a,a : add a,l ; * 6
-    add a,low effects : ld l,a
-    ld a,high effects : adc a,0 : ld h,a
+    ld hl,scenes
+.scene_ptr equ $-2
 
-    ld a,(hl) : inc hl : call @sys.swap
+.reenter_scene
+    ld e,(hl) : inc hl : ld d,(hl) : inc hl
+    ld a,e : or d : jp nz,.process_scene
+
+    ld a,(hl) : inc hl : ld h,(hl) : ld l,a
+    jp .reenter_scene
+
+.process_scene
+    ex de,hl : add hl,bc : ld (next_ticks),hl : ex de,hl
+
+    ld a,(hl) : inc hl : ld (.effect_bank),a : call @sys.swap
     ld e,(hl) : inc hl : ld d,(hl) : inc hl
     ld a,(hl) : inc hl : ld (de),a
-    ld a,(hl) : inc hl : ld h,(hl) : ld l,a
+    ld e,(hl) : inc hl : ld d,(hl) : inc hl : ld (.effect_ptr),de
+    ld (.scene_ptr),hl
 
-    ld de,next : push de
-    jp hl
+.render_effect
+    ld a,0
+.effect_bank equ $-1
 
-    ; ld a,@bank_code : call @sys.swap : call @eff_rain.render
+    call @sys.swap
 
-next
+    call 0
+.effect_ptr equ $-2
+
     ifdef _BORDERMETER : xor a : out (#fe),a : endif
     jp loop
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
-effects
-    db @bank_code : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_1 : dw @eff_raskolbas.render
-    db @bank_code : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_2 : dw @eff_raskolbas.render
-    db @bank_code : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_3 : dw @eff_raskolbas.render
-    db @bank_code : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_4 : dw @eff_raskolbas.render
+scenes
+    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_1 : dw @eff_raskolbas.render
+    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_2 : dw @eff_raskolbas.render
+    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_3 : dw @eff_raskolbas.render
+    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_4 : dw @eff_raskolbas.render
 
-    db @bank_code : dw @eff_fire.config : db @eff_fire.cfg_strength_2 : dw @eff_fire.render
-    db @bank_code : dw @eff_slime.config : db @eff_slime.cfg_strength_2 : dw @eff_slime.render
-    db @bank_code : dw @eff_fire.config : db @eff_fire.cfg_strength_3 : dw @eff_fire.render
-    db @bank_code : dw @eff_slime.config : db @eff_slime.cfg_strength_3 : dw @eff_slime.render
+    dw #0100 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_2 : dw @eff_fire.render
+    dw #0100 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_2 : dw @eff_slime.render
+    dw #0100 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_3 : dw @eff_fire.render
+    dw #0100 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_3 : dw @eff_slime.render
 
-    db @bank_code : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_5 : dw @eff_raskolbas.render
-    db @bank_code : dw @eff_interp.config : db @eff_interp.cfg_strength_4 : dw @eff_interp.render
+    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_5 : dw @eff_raskolbas.render
+    dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_3 : dw @eff_interp.render
 
-    db @bank_code : dw @eff_plasma.config : db @eff_plasma.cfg_strength_2 : dw @eff_plasma.render
-    db @bank_code : dw @eff_interp.config : db @eff_interp.cfg_strength_3 : dw @eff_interp.render
-    db @bank_code : dw @eff_plasma.config : db @eff_plasma.cfg_strength_1 : dw @eff_plasma.render
-    db @bank_code : dw @eff_interp.config : db @eff_interp.cfg_strength_1 : dw @eff_interp.render
+.loop
+    dw #0100 : db @bank_eff_plasma : dw @eff_plasma.config : db @eff_plasma.cfg_strength_2 : dw @eff_plasma.render
+    dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_1 : dw @eff_interp.render
+    dw #0100 : db @bank_eff_plasma : dw @eff_plasma.config : db @eff_plasma.cfg_strength_1 : dw @eff_plasma.render
+    dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_3 : dw @eff_interp.render
 
-    db @bank_code : dw @eff_rain.config : db @eff_rain.cfg_strength_1 : dw @eff_rain.render
-    db @bank_code : dw @eff_rain.config : db @eff_rain.cfg_strength_2 : dw @eff_rain.render
+    dw #0100 : db @bank_eff_rain : dw @eff_rain.config : db @eff_rain.cfg_strength_1 : dw @eff_rain.render
+    dw #0100 : db @bank_eff_rain : dw @eff_rain.config : db @eff_rain.cfg_strength_2 : dw @eff_rain.render
+
+    dw 0 : dw scenes.loop
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
-on_int_pre
+on_int
     ifdef _BORDERMETER : ld a,1 : out (#fe),a : endif
 
-    ld a,(@sys.bank) : ld (on_int_post.bank),a
-    if @bank_code : ld a,@bank_code : else : xor a : endif
-    jp @sys.swap
+    ld a,1
+.is_inactive equ $-1
 
-on_note
-    ret
+    and a : ret nz
 
-on_int_post
     ld hl,(ticks) : inc hl : ld (ticks),hl
+    ld a,(@sys.bank) : ld (.bank),a
+
+    if @bank_player : ld a,@bank_player : else : xor a : endif
+    call @sys.swap : call @player.PLAY
 
     ld a,0
 .bank equ $-1
 
     jp @sys.swap
+
+on_note
+    ret
 
 ;-----------------------------------------------------------------------------------------------------------------------
 

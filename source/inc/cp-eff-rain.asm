@@ -10,7 +10,6 @@ config equ render.config
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld a,high @rend.palette_low : ld (@rend.render.palette),a
     ld hl,@rend.vscreen+30*32+31
     ld de,@rend.vscreen+31*32+31
     ld b,31
@@ -39,7 +38,7 @@ render
     call @math.random_u8 : and 31
     add a,e : ld e,a
 
-    ld a,(.config) : rlca : ld c,a
+    ld a,(.config) : rlca : rlca : ld c,a
     call @math.random_u8 : and c
     ld (de),a
 

@@ -151,15 +151,8 @@ int_handler
     exa : exx
     push af,bc,de,hl
 
-    call @mgr.on_int_pre
+    call @mgr.on_int
 
-    ld a,0
-is_music_played equ $-1
-
-    and a : call nz,@player.PLAY
-    call @mgr.on_int_post
-
-.exit
     pop hl,de,bc,af
     exx : exa
     pop iy,ix,hl,de,bc,af
