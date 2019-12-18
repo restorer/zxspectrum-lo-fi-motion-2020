@@ -20,12 +20,13 @@
 ;-----------------------------------------------------------------------------------------------------------------------
 
 @bank_player equ 0
+@bank_eff_burb equ 0
 @bank_eff_fire equ 0
-@bank_eff_rain equ 0
-@bank_eff_slime equ 0
 @bank_eff_interp equ 0
-@bank_eff_raskolbas equ 0
 @bank_eff_plasma equ 0
+@bank_eff_rain equ 0
+@bank_eff_raskolbas equ 0
+@bank_eff_slime equ 0
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
@@ -35,12 +36,13 @@
     incbin "data/music.pt3"
 
     include "inc/cp-pt3player-as.asm"
+    include "inc/cp-eff-burb.asm"
     include "inc/cp-eff-fire.asm"
-    include "inc/cp-eff-rain.asm"
-    include "inc/cp-eff-slime.asm"
     include "inc/cp-eff-interp.asm"
-    include "inc/cp-eff-raskolbas.asm"
     include "inc/cp-eff-plasma.asm"
+    include "inc/cp-eff-rain.asm"
+    include "inc/cp-eff-raskolbas.asm"
+    include "inc/cp-eff-slime.asm"
 
 @bank_0_last
     include "inc/vp-pt3player.asm"
@@ -69,7 +71,7 @@
     include "inc/cm-system.asm"
     include "inc/cm-manager.asm"
     include "inc/cm-math.asm"
-    include "inc/cm-data.asm"
+    include "inc/cm-data-ab.asm"
     include "inc/cm-renderer-as.asm"
 
 @data

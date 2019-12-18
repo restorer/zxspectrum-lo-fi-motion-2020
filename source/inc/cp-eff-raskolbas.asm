@@ -19,6 +19,10 @@ config equ render.config
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
+    ld a,(.config) : cp cfg_strength_5 : ld a,%11100000 : jp nz,1F
+    ld a,%01100000
+1   ld (.box_param),a
+
     ld hl,@rend.vscreen
     ld b,32
 
@@ -71,7 +75,12 @@ render
 .no_hline
     ld a,(.config) : and cfg_box : ret z
 
-    call @math.random_u8 : ld c,a : and %11100000 : ret nz
+    call @math.random_u8 : ld c,a
+
+    and %11100000
+.box_param equ $-1
+
+    ret nz
     ld a,c : and #0f : inc a : ld b,a : ld (.box_width),a
 
     call @math.random_u8 : and #0f : inc a : ld c,a

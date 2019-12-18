@@ -107,7 +107,7 @@ interp_line
 ; USE:
 ;   hl
 get_point
-    ld h,high @data.sintab : ld l,a
+    ld h,high @data.sintab_u8 : ld l,a
     ld a,(hl)
     rrca : rrca : rrca : and 31
     ret

@@ -10,11 +10,26 @@ config equ render.config
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
+    ld a,(.config) : cp cfg_strength_2 : jp z,.change_params
+
+    ld a,8 : ld (.param_1),a
+    ld a,-4 : ld (.param_2),a
+    ld a,-2 : ld (.param_3),a
+    ld a,2 : ld (.param_4),a
+    jp .entry
+
+.change_params
+    ld a,16 : ld (.param_1),a
+    ld a,-8 : ld (.param_2),a
+    ld a,-4 : ld (.param_3),a
+    ld a,4 : ld (.param_4),a
+
+.entry
     ld ix,@rend.vscreen
-    ld h,high @data.sintab : ld d,h
+    ld h,high @data.sintab_u8 : ld d,h
 
     exx
-    ld h,high @data.sintab : ld d,h
+    ld h,high @data.sintab_u8 : ld d,h
 
     ld a,(@mgr.ticks) : ld l,a
     ld a,(@mgr.ticks) : add a,a : ld e,a
@@ -35,14 +50,33 @@ render
 .config equ $-1
 
     ld (ix),a : inc ix
+    ld a,l
 
-    ld a,l : add a,8 : ld l,a
-    ld a,e : sub 4 : ld e,a
+    add a,8
+.param_1 equ $-1
+
+    ld l,a
+    ld a,e
+
+    add a,-4
+.param_2 equ $-1
+
+    ld e,a
     djnz .loop_cols
 
     exx
-    ld a,l : add a,-2 : ld l,a
-    inc e : inc e
+    ld a,l
+
+    add a,-2
+.param_3 equ $-1
+
+    ld l,a
+    ld a,e
+
+    add a,2
+.param_4 equ $-1
+
+    ld e,a
     djnz .loop_rows
 
     ret
