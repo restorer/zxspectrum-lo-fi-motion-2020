@@ -73,21 +73,27 @@ scenes
     dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_4 : dw @eff_raskolbas.render
 
     dw #0100 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_1 : dw @eff_slime.render
-    dw #0100 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_2 : dw @eff_fire.render
-    dw #0100 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_2 : dw @eff_slime.render
-    dw #0100 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_3 : dw @eff_fire.render
+    dw #0080 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_1 : dw @eff_fire.render
+    dw #0080 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_2 : dw @eff_fire.render
+    dw #0080 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_2 : dw @eff_slime.render
+    dw #0080 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_3 : dw @eff_slime.render
+    dw #0080 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_3 : dw @eff_fire.render
+    dw #0040 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_2 : dw @eff_fire.render
+    dw #0040 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_1 : dw @eff_fire.render
 
     dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_5 : dw @eff_raskolbas.render
     dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_2 : dw @eff_interp.render
 
-.loop
     dw #0100 : db @bank_eff_plasma : dw @eff_plasma.config : db @eff_plasma.cfg_strength_2 : dw @eff_plasma.render
     dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_1 : dw @eff_interp.render
     dw #0100 : db @bank_eff_plasma : dw @eff_plasma.config : db @eff_plasma.cfg_strength_1 : dw @eff_plasma.render
     dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_3 : dw @eff_interp.render
 
+.loop
     dw #0100 : db @bank_eff_rain : dw @eff_rain.config : db @eff_rain.cfg_strength_1 : dw @eff_rain.render
     dw #0100 : db @bank_eff_burb : dw @eff_burb.config : db @eff_burb.cfg_strength_2 : dw @eff_burb.render
+    dw #0100 : db @bank_eff_burb : dw @eff_burb.config : db @eff_burb.cfg_strength_1 : dw @eff_burb.render
+    dw #0100 : db @bank_eff_rain : dw @eff_rain.config : db @eff_rain.cfg_strength_2 : dw @eff_rain.render
 
     dw 0 : dw scenes.loop
 
