@@ -11,7 +11,7 @@ config equ render.config
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld de,@rend.vscreen+32*32
+    ld de,@rend.vscreen+@core_rows*32
 
     ld bc,(32*256)+cfg_strength_3
 .config equ $-2
@@ -22,7 +22,7 @@ render
     djnz .fill
 
     ld ix,@rend.vscreen
-    ld bc,(32*256)+31
+    ld bc,(@core_rows*256)+31
 
 .loop
     ld a,(ix+32) : add a,(ix+33) : add a,(ix+64)

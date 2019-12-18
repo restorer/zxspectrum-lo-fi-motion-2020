@@ -10,9 +10,9 @@ config equ render.config
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld hl,@rend.vscreen+30*32+31
-    ld de,@rend.vscreen+31*32+31
-    ld b,31
+    ld hl,@rend.vscreen+(@core_rows-2)*32+31
+    ld de,@rend.vscreen+(@core_rows-1)*32+31
+    ld b,@core_rows-1
 
 .loop
     ld c,#ff

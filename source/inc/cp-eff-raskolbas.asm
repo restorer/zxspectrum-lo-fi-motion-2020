@@ -24,18 +24,18 @@ render
 1   ld (.box_param),a
 
     ld hl,@rend.vscreen
-    ld b,32
+    ld b,@core_rows
 
 .fade
     dup 31
-        ld a,(hl) : sub 2 : jp p,1F
+        ld a,(hl) : sub 2 : jp p,2F
         xor a
-1       ld (hl),a : inc l
+2       ld (hl),a : inc l
     edup
 
-    ld a,(hl) : sub 2 : jp p,1F
+    ld a,(hl) : sub 2 : jp p,3F
     xor a
-1   ld (hl),a : inc hl
+3   ld (hl),a : inc hl
 
     dec b : jp nz,.fade
 
@@ -49,7 +49,8 @@ render
 
     ld h,high @rend.vscreen
     ld a,l : and 31 : add a,low @rend.vscreen : ld l,a
-    ld de,32 : ld b,e
+    ld de,32
+    if @core_rows == 32 : ld b,e : else : ld b,@core_rows : endif
     ld a,line_color
 
 .vline
@@ -59,10 +60,17 @@ render
 .no_vline
     ld a,(.config) : and cfg_hline : jp z,.no_hline
 
-    call @math.random_u8 : ld l,a
+    call @math.random_u8 : ld e,a
     and %01100000 : jp nz,.no_hline
 
-    ld a,l : and 31 : ld l,a : ld h,0
+    if @core_rows == 32
+        ld a,e : and 31 : ld l,a : ld h,0
+    else
+        ld d,0
+        ld bc,@core_rows
+        call @math.div_u16_u16u16
+    endif
+
     dup 5 : sla hl : edup
     ld de,@rend.vscreen : add hl,de
     ld b,32
@@ -81,12 +89,31 @@ render
 .box_param equ $-1
 
     ret nz
-    ld a,c : and #0f : inc a : ld b,a : ld (.box_width),a
+
+    if @core_rows == 32
+        ld a,c : and #0f
+    else
+        ld e,c : ld d,0
+        ld bc,@core_rows/2
+        call @math.div_u16_u16u16
+        ld a,l
+    endif
+
+    inc a : ld b,a : ld (.box_width),a
 
     call @math.random_u8 : and #0f : inc a : ld c,a
-    call @math.random_u8 : and #0f : ld l,a
+    call @math.random_u8
 
-    ld a,l : and 15 : ld l,a : ld h,0
+    if @core_rows == 32
+        and #0f : ld l,a : ld h,0
+    else
+        push bc
+        ld e,a : ld d,0
+        ld bc,@core_rows/2
+        call @math.div_u16_u16u16
+        pop bc
+    endif
+
     dup 5 : sla hl : edup
     ld de,@rend.vscreen : add hl,de
 
@@ -106,7 +133,6 @@ render
 .box_width equ $-1
 
     dec c : jp nz,.box
-
     ret
 
 ;-----------------------------------------------------------------------------------------------------------------------

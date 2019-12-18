@@ -30,13 +30,13 @@ palette
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld lx,16
+    ld lx,@core_rows/2
     ld hl,vscreen
     ld bc,33
     ld d,high palette
     exx
 
-    ld bc,#D800+4*32
+    ld bc,#D800+((24-@core_rows/2)/2)*32
     ld h,(high palette)+1
     ld de,vscreen+32
 

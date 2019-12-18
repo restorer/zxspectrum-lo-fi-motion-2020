@@ -12,7 +12,7 @@ config equ render.config
 render
     ld hl,@rend.vscreen+32
     ld de,@rend.vscreen
-    ld b,31
+    ld b,@core_rows-1
 
 .loop
     ld c,#ff
@@ -34,7 +34,7 @@ render
     ld b,a
 
 .fill
-    ld de,@rend.vscreen+31*32
+    ld de,@rend.vscreen+(@core_rows-1)*32
     call @math.random_u8 : and 31
     add a,e : ld e,a
 
@@ -43,7 +43,6 @@ render
     ld (de),a
 
     djnz .fill
-
     ret
 
 ;-----------------------------------------------------------------------------------------------------------------------

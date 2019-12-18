@@ -34,7 +34,7 @@ render
     ld a,(@mgr.ticks) : ld l,a
     ld a,(@mgr.ticks) : add a,a : ld e,a
 
-    ld bc,32*256+4
+    ld b,@core_rows
 
 .loop_rows
     ld a,(hl) : exx : ld l,a : exx

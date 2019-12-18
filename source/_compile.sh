@@ -13,4 +13,6 @@ RES="$?"
 [ -e _build/main-output.log ] && echo "----" && cat _build/main-output.log && echo "----"
 [ $RES != "0" ] && exit
 
-[ -e _build/main.sna ] && zemu -l _build/main.l _build/main.sna
+if [ "$1" != "--norun" ] ; then
+    [ -e _build/main.sna ] && zemu -l _build/main.l _build/main.sna
+fi

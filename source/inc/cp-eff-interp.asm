@@ -21,8 +21,14 @@ render
     ld h,a : ld l,e
 
     and a : sbc hl,de
-    dup 5 : sra hl : edup
-    ld (interp.left_pt_add),hl
+
+    if @core_rows == 32
+        .5 sra hl : ld (interp.left_pt_add),hl
+    else
+        ex de,hl : ld bc,@core_rows
+        call @math.div_s16_s16s16
+        ld (interp.left_pt_add),de
+    endif
 
     ;;;;
 
@@ -36,8 +42,14 @@ render
     ld h,a : ld l,e
 
     and a : sbc hl,de
-    dup 5 : sra hl : edup
-    ld (interp.right_pt_add),hl
+
+    if @core_rows == 32
+        .5 sra hl : ld (interp.right_pt_add),hl
+    else
+        ex de,hl : ld bc,@core_rows
+        call @math.div_s16_s16s16
+        ld (interp.right_pt_add),de
+    endif
 
     ; fallthrough
 
@@ -48,7 +60,7 @@ render
 ;   (.right_pt_add) - right point addition
 interp
     ld ix,@rend.vscreen
-    ld ly,32
+    ld ly,@core_rows
 
 .loop
     ld de,0
@@ -85,7 +97,7 @@ interp
 interp_line
     push de
     and a : sbc hl,de
-    dup 5 : sra hl : edup
+    .5 sra hl
     ex de,hl
     pop hl
 

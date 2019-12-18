@@ -21,8 +21,8 @@ render
     ld (de),a : inc e
     djnz .fill
 
-    ld ix,@rend.vscreen+31*32+31
-    ld bc,32*256+31
+    ld ix,@rend.vscreen+(@core_rows-1)*32+31
+    ld bc,@core_rows*256+31
 
 .loop
     dup 31
