@@ -156,8 +156,8 @@ scenes
     dw #0100 : db @bank_eff_interp
     dw @eff_interp.enter : db @eff_interp.cfg_strength_3 : dw dummy_leave : dw @eff_interp.render
 
+    ;;;;
 
-.loop
     dw #0100 : db @bank_eff_rain
     dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_leave : dw @eff_rain.render
 
@@ -172,6 +172,13 @@ scenes
 
     dw #0080 : db @bank_eff_burb
     dw @eff_burb.enter : db @eff_burb.cfg_strength_1 : dw dummy_leave : dw @eff_burb.render
+
+    ;;;;
+
+.loop
+
+    dw #0100 : db @bank_eff_rtzoomer
+    dw @eff_rtzoomer.enter : db 0 : dw dummy_leave : dw @eff_rtzoomer.render
 
     dw 0 : dw scenes.loop
 
