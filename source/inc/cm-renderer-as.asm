@@ -33,7 +33,9 @@ prepare
     ld hl,#c000 : ld de,#c001 : ld bc,#400 : ld (hl),l : ldir
     ld a,#ff : ld (hl),a : ld bc,#3FF : ldir
     ld hl,#c000 : ld de,#c800 : ld bc,#1000 : ldir
-    ex de,hl : ld de,#d801 : ld bc,#02ff : ld (hl),l : ldir
+
+.attrs
+    ld hl,#d800 : ld de,#d801 : ld bc,#02ff : ld (hl),l : ldir
     ret
 
 ;-----------------------------------------------------------------------------------------------------------------------

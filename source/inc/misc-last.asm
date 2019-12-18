@@ -14,6 +14,10 @@
     display "[ BANK 0 ]"
     display "last    : ", @bank_0_last,   " ; sizeof last : ", /D, @bank_0_last-#c000
     display "last_b  : ", @bank_0_last_b, " ; FREE        : ", /D, #ffff-@bank_0_last_b+1
+    display " "
+    display "[ BANK 1 ]"
+    display "last    : ", @bank_1_last,   " ; sizeof last : ", /D, @bank_1_last-#c000
+    display "last_b  : ", @bank_1_last_b, " ; FREE        : ", /D, #ffff-@bank_1_last_b+1
 
     savesna "../_build/main.sna", @entry
     labelslist "../_build/main.l"

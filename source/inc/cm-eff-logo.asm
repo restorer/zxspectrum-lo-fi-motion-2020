@@ -21,9 +21,15 @@ leave
     xor a : ld (@mgr.loop.render_skip),a : out (#fe),a
 
     ld a,(@sys.swap.or_with) : xor 8 : ld (@sys.swap.or_with),a
-    and 8 : rrca : rrca : xor 7 : call @sys.swap
+    and 8 : rrca : rrca : or 5 : call @sys.swap
+    call @rend.prepare.attrs
 
-    jp @rend.prepare
+    ld a,(@sys.bank) : xor 2 : call @sys.swap
+    call @rend.prepare
+
+    ld hl,@rend.vscreen : ld de,@rend.vscreen+1 : ld bc,@core_rows*32
+    xor a : ld (hl),a : ldir
+    ret
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
