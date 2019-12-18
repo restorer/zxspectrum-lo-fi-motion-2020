@@ -6,11 +6,10 @@ init
     halt
     xor a : call @sys.attr_fill
 
-    ld hl,#4000 : ld de,#4001 : ld bc,#400 : ld (hl),l : ldir
-    ld a,#ff : ld (hl),a : ld bc,#3FF : ldir
-    ld hl,#4000 : ld de,#4800 : ld bc,#1000 : ldir
+    ld a,5 : call @sys.swap
+    call @rend.prepare
 
-    ld a,#17 : call @sys.swap
+    ld a,7 : call @sys.swap
     ld hl,#4000 : ld de,#c000 : ld bc,#1b00 : ldir
 
     ret
@@ -37,23 +36,48 @@ loop
 
 .process_scene
     ex de,hl : add hl,bc : ld (next_ticks),hl : ex de,hl
+    push hl
 
-    ld a,(hl) : inc hl : ld (.effect_bank),a : call @sys.swap
+    ld a,0
+.leave_bank equ $-1
+
+    call @sys.swap
+
+    call dummy_leave
+.leave_ptr equ $-2
+
+    pop hl
+    ld a,(hl) : inc hl : ld (.render_bank),a : ld (.leave_bank),a : call @sys.swap
     ld e,(hl) : inc hl : ld d,(hl) : inc hl
-    ld a,(hl) : inc hl : ld (de),a
-    ld e,(hl) : inc hl : ld d,(hl) : inc hl : ld (.effect_ptr),de
+    ld a,(hl) : inc hl
+
+    push hl
+    ex de,hl
+    ld de,.after_enter : push de
+    jp hl
+
+.after_enter
+    pop hl
+
+    ld e,(hl) : inc hl : ld d,(hl) : inc hl : ld (.leave_ptr),de
+    ld e,(hl) : inc hl : ld d,(hl) : inc hl : ld (.render_ptr),de
     ld (.scene_ptr),hl
 
 .render_effect
     ld a,0
-.effect_bank equ $-1
+.render_bank equ $-1
 
     call @sys.swap
 
     call 0
-.effect_ptr equ $-2
+.render_ptr equ $-2
 
     ifdef _BORDERMETER : xor a : out (#fe),a : endif
+
+    ld a,0
+.render_skip equ $-1
+
+    and a : jp nz,loop
 
     halt
 
@@ -66,34 +90,88 @@ loop
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
+dummy_leave
+    ret
+
+;-----------------------------------------------------------------------------------------------------------------------
+
 scenes
-    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_1 : dw @eff_raskolbas.render
-    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_2 : dw @eff_raskolbas.render
-    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_3 : dw @eff_raskolbas.render
-    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_4 : dw @eff_raskolbas.render
+    dw #0100 : db @bank_eff_raskolbas
+    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_1 : dw dummy_leave : dw @eff_raskolbas.render
 
-    dw #0100 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_1 : dw @eff_slime.render
-    dw #0080 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_1 : dw @eff_fire.render
-    dw #0080 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_2 : dw @eff_fire.render
-    dw #0080 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_2 : dw @eff_slime.render
-    dw #0080 : db @bank_eff_slime : dw @eff_slime.config : db @eff_slime.cfg_strength_3 : dw @eff_slime.render
-    dw #0080 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_3 : dw @eff_fire.render
-    dw #0040 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_2 : dw @eff_fire.render
-    dw #0040 : db @bank_eff_fire : dw @eff_fire.config : db @eff_fire.cfg_strength_1 : dw @eff_fire.render
+    dw #0100 : db @bank_eff_raskolbas
+    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_2 : dw dummy_leave : dw @eff_raskolbas.render
 
-    dw #0100 : db @bank_eff_raskolbas : dw @eff_raskolbas.config : db @eff_raskolbas.cfg_strength_5 : dw @eff_raskolbas.render
-    dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_2 : dw @eff_interp.render
+    dw #0100 : db @bank_eff_raskolbas
+    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_3 : dw dummy_leave : dw @eff_raskolbas.render
 
-    dw #0100 : db @bank_eff_plasma : dw @eff_plasma.config : db @eff_plasma.cfg_strength_2 : dw @eff_plasma.render
-    dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_1 : dw @eff_interp.render
-    dw #0100 : db @bank_eff_plasma : dw @eff_plasma.config : db @eff_plasma.cfg_strength_1 : dw @eff_plasma.render
-    dw #0100 : db @bank_eff_interp : dw @eff_interp.config : db @eff_interp.cfg_strength_3 : dw @eff_interp.render
+    dw #0100 : db @bank_eff_raskolbas
+    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_4 : dw dummy_leave : dw @eff_raskolbas.render
+
+    ;;;;
+
+    dw #0100 : db @bank_eff_slime
+    dw @eff_slime.enter : db @eff_slime.cfg_strength_1 : dw dummy_leave : dw @eff_slime.render
+
+    dw #0080 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_1 : dw dummy_leave : dw @eff_fire.render
+
+    dw #0080 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_2 : dw dummy_leave : dw @eff_fire.render
+
+    dw #0080 : db @bank_eff_slime
+    dw @eff_slime.enter : db @eff_slime.cfg_strength_2 : dw dummy_leave : dw @eff_slime.render
+
+    dw #0080 : db @bank_eff_slime
+    dw @eff_slime.enter : db @eff_slime.cfg_strength_3 : dw dummy_leave : dw @eff_slime.render
+
+    dw #0080 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_3 : dw dummy_leave : dw @eff_fire.render
+
+    dw #0040 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_2 : dw dummy_leave : dw @eff_fire.render
+
+    dw #0040 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_1 : dw dummy_leave : dw @eff_fire.render
+
+    ;;;;
+
+    dw #0100 : db @bank_eff_raskolbas
+    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_5 : dw dummy_leave : dw @eff_raskolbas.render
+
+    dw #0100 : db @bank_eff_interp
+    dw @eff_interp.enter : db @eff_interp.cfg_strength_2 : dw dummy_leave : dw @eff_interp.render
+
+    ;;;;
+
+    dw #0100 : db @bank_eff_plasma
+    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_2 : dw dummy_leave : dw @eff_plasma.render
+
+    dw #0100 : db @bank_eff_interp
+    dw @eff_interp.enter : db @eff_interp.cfg_strength_1 : dw dummy_leave : dw @eff_interp.render
+
+    dw #0100 : db @bank_eff_plasma
+    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_1 : dw dummy_leave : dw @eff_plasma.render
+
+    dw #0100 : db @bank_eff_interp
+    dw @eff_interp.enter : db @eff_interp.cfg_strength_3 : dw dummy_leave : dw @eff_interp.render
+
 
 .loop
-    dw #0100 : db @bank_eff_rain : dw @eff_rain.config : db @eff_rain.cfg_strength_1 : dw @eff_rain.render
-    dw #0100 : db @bank_eff_burb : dw @eff_burb.config : db @eff_burb.cfg_strength_2 : dw @eff_burb.render
-    dw #0100 : db @bank_eff_burb : dw @eff_burb.config : db @eff_burb.cfg_strength_1 : dw @eff_burb.render
-    dw #0100 : db @bank_eff_rain : dw @eff_rain.config : db @eff_rain.cfg_strength_2 : dw @eff_rain.render
+    dw #0100 : db @bank_eff_rain
+    dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_leave : dw @eff_rain.render
+
+    dw #0100 : db @bank_eff_rain
+    dw @eff_rain.enter : db @eff_rain.cfg_strength_2 : dw dummy_leave : dw @eff_rain.render
+
+    dw #0100 : db 0
+    dw @eff_logo.enter : db 0 : dw @eff_logo.leave : dw @eff_logo.render
+
+    dw #0080 : db @bank_eff_burb
+    dw @eff_burb.enter : db @eff_burb.cfg_strength_2 : dw dummy_leave : dw @eff_burb.render
+
+    dw #0080 : db @bank_eff_burb
+    dw @eff_burb.enter : db @eff_burb.cfg_strength_1 : dw dummy_leave : dw @eff_burb.render
 
     dw 0 : dw scenes.loop
 

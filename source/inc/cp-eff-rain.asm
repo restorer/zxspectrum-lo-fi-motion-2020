@@ -5,7 +5,12 @@
 cfg_strength_1 equ 1
 cfg_strength_2 equ 7
 
-config equ render.config
+;-----------------------------------------------------------------------------------------------------------------------
+
+enter
+    ld (render.strength),a
+    rlca : rlca : ld (render.color_mask),a
+    ret
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
@@ -28,7 +33,7 @@ render
     call @math.random_u8
 
     and cfg_strength_1
-.config equ $-1
+.strength equ $-1
 
     ret z
     ld b,a
@@ -38,8 +43,11 @@ render
     call @math.random_u8 : and 31
     add a,e : ld e,a
 
-    ld a,(.config) : rlca : rlca : ld c,a
-    call @math.random_u8 : and c
+    call @math.random_u8
+
+    and 0
+.color_mask equ $-1
+
     ld (de),a
 
     djnz .fill

@@ -6,7 +6,11 @@ cfg_strength_1 equ %00000111
 cfg_strength_2 equ %00001111
 cfg_strength_3 equ %00011111
 
-config equ interp_line.config
+;-----------------------------------------------------------------------------------------------------------------------
+
+enter
+    ld (interp_line.color_mask),a
+    ret
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
@@ -102,7 +106,7 @@ interp_line
     pop hl
 
     ld c,cfg_strength_3
-.config equ $-1
+.color_mask equ $-1
 
     dup 31
         ld a,h : and c : ld (ix),a

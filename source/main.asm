@@ -73,6 +73,7 @@
     include "inc/cm-system.asm"
     include "inc/cm-manager.asm"
     include "inc/cm-math.asm"
+    include "inc/cm-eff-logo.asm"
     include "inc/cm-data-ab.asm"
     include "inc/cm-renderer-as.asm"
 

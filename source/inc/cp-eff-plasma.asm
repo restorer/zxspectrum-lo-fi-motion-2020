@@ -5,26 +5,27 @@
 cfg_strength_1 equ %00011000
 cfg_strength_2 equ %00011111
 
-config equ render.config
+;-----------------------------------------------------------------------------------------------------------------------
+
+enter
+    ld (render.color_mask),a : cp cfg_strength_2 : jp z,.change_params
+
+    ld a,8 : ld (render.param_1),a
+    ld a,-4 : ld (render.param_2),a
+    ld a,-2 : ld (render.param_3),a
+    ld a,2 : ld (render.param_4),a
+    ret
+
+.change_params
+    ld a,16 : ld (render.param_1),a
+    ld a,-8 : ld (render.param_2),a
+    ld a,-4 : ld (render.param_3),a
+    ld a,4 : ld (render.param_4),a
+    ret
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld a,(.config) : cp cfg_strength_2 : jp z,.change_params
-
-    ld a,8 : ld (.param_1),a
-    ld a,-4 : ld (.param_2),a
-    ld a,-2 : ld (.param_3),a
-    ld a,2 : ld (.param_4),a
-    jp .entry
-
-.change_params
-    ld a,16 : ld (.param_1),a
-    ld a,-8 : ld (.param_2),a
-    ld a,-4 : ld (.param_3),a
-    ld a,4 : ld (.param_4),a
-
-.entry
     ld ix,@rend.vscreen
     ld h,high @data.sintab_u8 : ld d,h
 
@@ -47,7 +48,7 @@ render
     rrca : rrca : rrca
 
     and cfg_strength_2
-.config equ $-1
+.color_mask equ $-1
 
     ld (ix),a : inc ix
     ld a,l

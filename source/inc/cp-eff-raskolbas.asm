@@ -14,15 +14,24 @@ cfg_strength_3 equ cfg_vline or cfg_box
 cfg_strength_4 equ cfg_hline or cfg_box
 cfg_strength_5 equ cfg_vline or cfg_hline or cfg_box
 
-config equ render.config
+;-----------------------------------------------------------------------------------------------------------------------
+
+enter
+    ld b,a
+
+    cp cfg_vline or cfg_hline or cfg_box : ld a,%11100000 : jp nz,1F
+    ld a,%01100000
+1   ld (render.box_strength),a
+
+    ld a,b : and cfg_vline : ld (render.is_vline),a
+    ld a,b : and cfg_hline : ld (render.is_hline),a
+    ld a,b : and cfg_box : ld (render.is_box),a
+
+    ret
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
 render
-    ld a,(.config) : cp cfg_strength_5 : ld a,%11100000 : jp nz,1F
-    ld a,%01100000
-1   ld (.box_param),a
-
     ld hl,@rend.vscreen
     ld b,@core_rows
 
@@ -39,29 +48,32 @@ render
 
     dec b : jp nz,.fade
 
-    ld a,cfg_vline or cfg_hline or cfg_box
-.config equ $-1
+    ld a,0
+.is_vline equ $-1
 
-    and cfg_vline : jp z,.no_vline
+    and a : jp z,.draw_hline
 
     call @math.random_u8 : ld l,a
-    and %01100000 : jp nz,.no_vline
+    and %01100000 : jp nz,.draw_hline
 
     ld h,high @rend.vscreen
     ld a,l : and 31 : add a,low @rend.vscreen : ld l,a
-    ld de,32
+    ld de,32 : ld a,line_color
     if @core_rows == 32 : ld b,e : else : ld b,@core_rows : endif
-    ld a,line_color
 
 .vline
     ld (hl),a : add hl,de
     djnz .vline
 
-.no_vline
-    ld a,(.config) : and cfg_hline : jp z,.no_hline
+.draw_hline
+
+    ld a,0
+.is_hline equ $-1
+
+    and a : jp z,.draw_box
 
     call @math.random_u8 : ld e,a
-    and %01100000 : jp nz,.no_hline
+    and %01100000 : jp nz,.draw_box
 
     if @core_rows == 32
         ld a,e : and 31 : ld l,a : ld h,0
@@ -73,20 +85,23 @@ render
 
     dup 5 : sla hl : edup
     ld de,@rend.vscreen : add hl,de
-    ld b,32
-    ld a,line_color
+    ld b,32 : ld a,line_color
 
 .hline
     ld (hl),a : inc l
     djnz .hline
 
-.no_hline
-    ld a,(.config) : and cfg_box : ret z
+.draw_box
+
+    ld a,0
+.is_box equ $-1
+
+    and a : ret z
 
     call @math.random_u8 : ld c,a
 
     and %11100000
-.box_param equ $-1
+.box_strength equ $-1
 
     ret nz
 
