@@ -21,11 +21,11 @@ enter
 
     cp cfg_vline or cfg_hline or cfg_box : ld a,%11100000 : jp nz,1F
     ld a,%01100000
-1   ld (render.box_strength),a
+1   ld (render_gfx.box_strength),a
 
-    ld a,b : and cfg_vline : ld (render.is_vline),a
-    ld a,b : and cfg_hline : ld (render.is_hline),a
-    ld a,b : and cfg_box : ld (render.is_box),a
+    ld a,b : and cfg_vline : ld (render_gfx.is_vline),a
+    ld a,b : and cfg_hline : ld (render_gfx.is_hline),a
+    ld a,b : and cfg_box : ld (render_gfx.is_box),a
 
     ret
 
@@ -34,20 +34,26 @@ enter
 render
     ld hl,@rend.vscreen
     ld b,@core_rows
+    ld a,(@mgr.frames) : ld c,a
 
 .fade
     dup 31
-        ld a,(hl) : sub 2 : jp p,2F
+        ld a,(hl) : sub c : jp p,2F
         xor a
 2       ld (hl),a : inc l
     edup
 
-    ld a,(hl) : sub 2 : jp p,3F
+    ld a,(hl) : sub c : jp p,3F
     xor a
 3   ld (hl),a : inc hl
 
     dec b : jp nz,.fade
+    ld b,c
 
+4   push bc : call render_gfx : pop bc
+    djnz 4B : ret
+
+render_gfx
     ld a,0
 .is_vline equ $-1
 

@@ -18,10 +18,11 @@ init
 
 run
     xor a : ld (on_int.is_inactive),a
+    inc a : ld (frames),a
 
 loop
     ld hl,(ticks)
-    ld bc,(next_ticks)
+    ld bc,(next_effect_ticks)
     and a : sbc hl,bc : jp c,.render_effect
 
     ld hl,scenes
@@ -35,7 +36,7 @@ loop
     jp .reenter_scene
 
 .process_scene
-    ex de,hl : add hl,bc : ld (next_ticks),hl : ex de,hl
+    ex de,hl : add hl,bc : ld (next_effect_ticks),hl : ex de,hl
     push hl
 
     ld a,0
@@ -80,6 +81,10 @@ loop
     and a : jp nz,loop
 
     halt
+
+    ld de,(prev_ticks)
+    ld hl,(ticks) : ld (prev_ticks),hl
+    and a : sbc hl,de : ld a,l : ld (frames),a
 
     ld a,(@sys.swap.or_with) : xor 8 : ld (@sys.swap.or_with),a
     and 8 : rrca : rrca : xor 7 : call @sys.swap
