@@ -55,6 +55,12 @@ render
 
 render_gfx
     ld a,0
+.should_skip equ $-1
+
+    xor 1 : ld (.should_skip),a
+    ret z
+
+    ld a,0
 .is_vline equ $-1
 
     and a : jp z,.draw_hline
