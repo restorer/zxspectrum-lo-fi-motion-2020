@@ -25,21 +25,25 @@ render
     ld (de),a : inc e
     djnz .fill
 
-    ld ix,@rend.vscreen+(@core_rows-1)*32+31
-    ld bc,@core_rows*256+31
+    ld de,@rend.vscreen+(@core_rows-1)*32+31
+    ld hl,@rend.vscreen+(@core_rows-2)*32+31
+    ld bc,@rend.vscreen+(@core_rows-3)*32+31
+    ld lx,@core_rows
 
 .loop
     dup 31
-        ld a,(ix-32) : add a,(ix-64)
-        rrca : and c
-        ld (ix),a : dec lx
+        ld a,(bc) : dec c
+        add a,(hl) : dec l
+        rrca : and 31
+        ld (de),a : dec e
     edup
 
-    ld a,(ix-32) : add a,(ix-64)
-    rrca : and c
-    ld (ix),a : dec ix
+    ld a,(bc) : dec bc
+    add a,(hl) : dec hl
+    rrca : and 31
+    ld (de),a : dec de
 
-    dec b : jp nz,.loop
+    dec lx : jp nz,.loop
     ret
 
 ;-----------------------------------------------------------------------------------------------------------------------
