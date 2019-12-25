@@ -150,7 +150,7 @@ mul_s16_s8s8_m4d256
 ; HL = A * HL
 mul_s16_s8s16
     call expand_a_de
-    ; jp mul_s16_s16s16
+    ; fallthrough
 
 ; HL = HL * DE
 ; A,C = UNDEF

@@ -101,6 +101,9 @@ dummy_leave
 ;-----------------------------------------------------------------------------------------------------------------------
 
 scenes
+    ; dw #4000 : db @bank_eff_rbars
+    ; dw @eff_rbars.enter : db @eff_rbars.cfg_strength_2 : dw dummy_leave : dw @eff_rbars.render
+
     dw #0100 : db @bank_eff_raskolbas
     dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_1 : dw dummy_leave : dw @eff_raskolbas.render
 
@@ -181,30 +184,45 @@ scenes
     ;;;;
 
     dw #0200 : db @bank_eff_dina
-    dw @eff_dina.enter : db 0 : dw dummy_leave : dw @eff_dina.render
+    dw @eff_dina.enter : db @eff_dina.cfg_strength_1 : dw dummy_leave : dw @eff_dina.render
 
     dw #0200 : db @bank_eff_rtzoomer
-    dw @eff_rtzoomer.enter : db 0 : dw dummy_leave : dw @eff_rtzoomer.render
+    dw @eff_rtzoomer.enter : db @eff_rtzoomer.cfg_strength_2 : dw dummy_leave : dw @eff_rtzoomer.render
 
     dw #0200 : db @bank_eff_dina
-    dw @eff_dina.enter : db 0 : dw dummy_leave : dw @eff_dina.render
+    dw @eff_dina.enter : db @eff_dina.cfg_strength_2 : dw dummy_leave : dw @eff_dina.render
 
     dw #0200 : db @bank_eff_rtzoomer
-    dw @eff_rtzoomer.enter : db 0 : dw dummy_leave : dw @eff_rtzoomer.render
+    dw @eff_rtzoomer.enter : db @eff_rtzoomer.cfg_strength_1 : dw dummy_leave : dw @eff_rtzoomer.render
 
     ;;;;
 
-    dw #0100 : db @bank_eff_plasma
+    dw #0080 : db @bank_eff_rbars
+    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_1 : dw dummy_leave : dw @eff_rbars.render
+
+    dw #0080 : db @bank_eff_rbars
+    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_2 : dw dummy_leave : dw @eff_rbars.render
+
+    dw #0080 : db @bank_eff_rbars
+    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_3 : dw dummy_leave : dw @eff_rbars.render
+
+    dw #0080 : db @bank_eff_rbars
+    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_4 : dw dummy_leave : dw @eff_rbars.render
+
+    dw #0080 : db @bank_eff_plasma
     dw @eff_plasma.enter : db @eff_plasma.cfg_strength_2 : dw dummy_leave : dw @eff_plasma.render
 
-    dw #0100 : db @bank_eff_interp
+    dw #0080 : db @bank_eff_interp
     dw @eff_interp.enter : db @eff_interp.cfg_strength_1 : dw dummy_leave : dw @eff_interp.render
 
-    dw #0100 : db @bank_eff_plasma
+    dw #0080 : db @bank_eff_plasma
     dw @eff_plasma.enter : db @eff_plasma.cfg_strength_1 : dw dummy_leave : dw @eff_plasma.render
 
-    dw #0100 : db @bank_eff_interp
+    dw #0040 : db @bank_eff_interp
     dw @eff_interp.enter : db @eff_interp.cfg_strength_3 : dw dummy_leave : dw @eff_interp.render
+
+    dw #0040 : db @bank_eff_rain
+    dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_leave : dw @eff_rain.render
 
 .loop
 
