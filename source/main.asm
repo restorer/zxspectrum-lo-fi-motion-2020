@@ -37,6 +37,7 @@
 @bank_eff_rtzoomer equ 1
 @bank_eff_dina equ 1
 @bank_eff_rbars equ 1
+@bank_eff_bigpic equ 1
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
@@ -66,6 +67,7 @@
     include "inc/cp-eff-rtzoomer.asm"
     include "inc/cp-eff-dina.asm"
     include "inc/cp-eff-rbars.asm"
+    include "inc/cp-eff-bigpic.asm"
 
 @bank_1_last
     include "inc/vp-eff-rbars.asm"
