@@ -105,6 +105,7 @@
 
     include "inc/vm-system.asm"
     include "inc/vm-manager.asm"
+    include "inc/vm-printer.asm"
     include "inc/vm-renderer-as.asm"
 
 @last_b

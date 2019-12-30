@@ -22,7 +22,12 @@ render
 
 .process_page
     ex de,hl : add hl,bc : ld (.next_page_ticks),hl : ex de,hl
-    ld (.render_text_ptr),hl
+
+    ld a,1
+    ld (specs+print_spec.curr_ptr),hl
+    ld (specs+print_spec.curr_pixels),a
+    ld (specs+print_spec+print_spec.curr_ptr),hl
+    ld (specs+print_spec+print_spec.curr_pixels),a
 
 .find_next_page
     ld a,(hl) : and a : jp z,.next_page_found
@@ -35,28 +40,55 @@ render
     inc hl : ld (.page_ptr),hl
 
 .render_page
+    ld a,(@sys.bank) : and 2
+    ld l,a : srl l
+    add a,a : add a,l ; *= 5
 
-    ld de,0
-.clear_text_ptr_5 equ $-2
+    add a,low specs : ld lx,a
+    ld a,high specs : adc a,0 : ld hx,a
 
-    ld a,(@sys.bank) : and 2 : jp z,.check_clear
+    ld a,(ix+print_spec.curr_pixels) : and a : jp z,.render_page_attributes
+    ld (ix+print_spec.curr_pixels),0
 
-    ld de,0
-.clear_text_ptr_7 equ $-2
+    ld de,(ix+print_spec.prev_ptr)
+    ld a,d : or e : call nz,clear_pixels
 
-.check_clear
-    ld a,d : or e : call nz,clear_lines
+    ld hl,(ix+print_spec.curr_ptr)
+    ld (ix+print_spec.prev_ptr),hl
+    jp render_pixels
 
-    ld hl,0
-.render_text_ptr equ $-2
+.render_page_attributes
+    ld de,(ix+print_spec.curr_ptr)
 
-    ld a,(@sys.bank) : and 2 : jp nz,.fill_clear_7
-    ld (.clear_text_ptr_5),hl : jp render_lines
+; IN:
+;   de - *lines
+render_attributes
+    ld a,(de) : and a : ret z
+    inc de : ld b,a
 
-.fill_clear_7
-    ld (.clear_text_ptr_7),hl
+    ld a,(de) : ld l,a : inc de
+    ld a,(de) : ld c,a
 
-render_lines
+    ld a,b : inc a : add a,e : ld e,a
+    ld a,d : adc a,0 : ld d,a
+    push de
+
+    ld a,c : or %01000000 : ld e,a
+    ld d,32 : ld h,#d9
+
+.loop
+    ld (hl),e
+    ld a,l : add a,d : ld l,a
+    ld (hl),c
+    ld a,l : add a,-31 : ld l,a
+    djnz .loop
+
+    pop de
+    jp render_attributes
+
+; IN:
+;   hl - *lines
+render_pixels
     ld a,(hl) : and a : ret z
     inc hl : ld b,a
 
@@ -95,11 +127,11 @@ render_lines
 
     inc l : exx
     djnz .loop
-    jp render_lines
+    jp render_pixels
 
 ; IN:
 ;   de - *lines
-clear_lines
+clear_pixels
     ld a,(de) : and a : ret z
     inc de : ld b,a
 
@@ -125,7 +157,7 @@ clear_lines
     djnz .loop
 
     pop de
-    jp clear_lines
+    jp clear_pixels
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
