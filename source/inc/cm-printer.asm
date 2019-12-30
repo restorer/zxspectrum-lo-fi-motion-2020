@@ -192,24 +192,14 @@ pages
             sj.add_byte(0)
         end
 
-        make_skip(0x100 * 4)
+        make_skip(0x100 * 8)
 
-        make_page(0x0040, {
+        make_page(0x0100, {
             { " CODE: RESTORER ", 1, -1, 1, 7 }
         })
 
-        make_page(0x0040, {
+        make_page(0x0100, {
             { " MUSIC: FATALSNIPE ", 5, -1, 1, 7 }
-        })
-
-        make_page(0x0040, {
-            { " CODE: RESTORER ", 1, -1, 1, 7 },
-            { " MUSIC: FATALSNIPE ", 5, -1, 1, 7 }
-        })
-
-        make_page(0x0040, {
-            { " MUSIC: FATALSNIPE ", 1, -1, 1, 7 },
-            { " CODE: RESTORER ", 5, -1, 1, 7 }
         })
 
     endlua

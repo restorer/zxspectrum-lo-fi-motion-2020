@@ -232,10 +232,62 @@ scenes
     dw #0040 : db @bank_eff_rain
     dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_func : dw @eff_rain.render
 
+    ;;;;
+
+    dw #0040 : db @bank_eff_slime
+    dw @eff_slime.enter : db @eff_slime.cfg_strength_3 : dw dummy_func : dw @eff_slime.render
+
+    dw #0020 : db @bank_eff_slime
+    dw @eff_slime.enter : db @eff_slime.cfg_strength_2 : dw dummy_func : dw @eff_slime.render
+
+    dw #0020 : db @bank_eff_slime
+    dw @eff_slime.enter : db @eff_slime.cfg_strength_1 : dw dummy_func : dw @eff_slime.render
+
+    dw #0040 : db @bank_eff_plasma
+    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_2 : dw dummy_func : dw @eff_plasma.render
+
+    dw #0040 : db @bank_eff_plasma
+    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_1 : dw dummy_func : dw @eff_plasma.render
+
+    dw #0040 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_3 : dw dummy_func : dw @eff_fire.render
+
+    dw #0020 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_2 : dw dummy_func : dw @eff_fire.render
+
+    dw #0020 : db @bank_eff_fire
+    dw @eff_fire.enter : db @eff_fire.cfg_strength_1 : dw dummy_func : dw @eff_fire.render
+
+    dw #0040 : db @bank_eff_interp
+    dw @eff_interp.enter : db @eff_interp.cfg_strength_3 : dw dummy_func : dw @eff_interp.render
+
+    dw #0020 : db @bank_eff_interp
+    dw @eff_interp.enter : db @eff_interp.cfg_strength_2 : dw dummy_func : dw @eff_interp.render
+
+    dw #0020 : db @bank_eff_interp
+    dw @eff_interp.enter : db @eff_interp.cfg_strength_1 : dw dummy_func : dw @eff_interp.render
+
 .loop
 
     dw #0100 : db @bank_eff_rain
+    dw @eff_rain.enter : db @eff_rain.cfg_strength_2 : dw dummy_func : dw @eff_rain.render
+
+    dw #0100 : db @bank_eff_rain
     dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_func : dw @eff_rain.render
+
+    ;;;;
+
+    dw #0100 : db @bank_eff_dina
+    dw @eff_dina.enter : db @eff_dina.cfg_strength_1 : dw dummy_func : dw @eff_dina.render
+
+    dw #0100 : db @bank_eff_dina
+    dw @eff_dina.enter : db @eff_dina.cfg_strength_2 : dw dummy_func : dw @eff_dina.render
+
+    dw #0100 : db @bank_eff_dina
+    dw @eff_dina.enter : db @eff_dina.cfg_strength_1 : dw dummy_func : dw @eff_dina.render
+
+    dw #0100 : db @bank_eff_dina
+    dw @eff_dina.enter : db @eff_dina.cfg_strength_2 : dw dummy_func : dw @eff_dina.render
 
     dw 0 : dw scenes.loop
 
