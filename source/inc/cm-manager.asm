@@ -22,7 +22,10 @@ run
 
 loop
     ld hl,(ticks)
-    ld bc,(next_effect_ticks)
+
+    ld bc,0
+.next_effect_ticks equ $-2
+
     and a : sbc hl,bc : jp c,.render_effect
 
     ld hl,scenes
@@ -36,7 +39,7 @@ loop
     jp .reenter_scene
 
 .process_scene
-    ex de,hl : add hl,bc : ld (next_effect_ticks),hl : ex de,hl
+    ex de,hl : add hl,bc : ld (.next_effect_ticks),hl : ex de,hl
     push hl
 
     ld a,0
@@ -89,6 +92,7 @@ loop
     ld a,(@sys.swap.or_with) : xor 8 : ld (@sys.swap.or_with),a
     and 8 : rrca : rrca : xor 7 : call @sys.swap
     call @rend.render
+    call @printer.render
 
     ifdef _BORDERMETER : ld a,2 : out (#fe),a : endif
     jp loop
