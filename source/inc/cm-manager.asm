@@ -91,6 +91,7 @@ loop
 
     ld a,(@sys.swap.or_with) : xor 8 : ld (@sys.swap.or_with),a
     and 8 : rrca : rrca : xor 7 : call @sys.swap
+
     call @rend.render
     call @printer.render
 

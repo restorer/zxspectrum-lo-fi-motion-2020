@@ -130,13 +130,57 @@ clear_lines
 ;-----------------------------------------------------------------------------------------------------------------------
 
 pages
-    dw #0040
-    db 16, 3*32+8, %00001111, " CODE: RESTORER "
-    db 0
+    lua allpass
 
-    dw #0040
-    db 16, 4*32+8, %00001111, " CODE: RESTORER "
-    db 0
+        function make_skip(duration)
+            sj.add_word(duration)
+            sj.add_byte(0)
+        end
+
+        function make_page(duration, texts)
+            sj.add_word(duration)
+
+            for _, text in ipairs(texts) do
+                local str, y, x, paper, ink = unpack(text)
+                local str_len = str:len()
+
+                if x < 0 then
+                    x = math.floor((32 - str_len) / 2)
+                end
+
+                sj.add_byte(str_len)
+                sj.add_byte(y * 32 + x)
+                sj.add_byte(paper * 8 + ink)
+
+                for str_idx = 1, str_len do
+                    sj.add_byte(str:byte(str_idx))
+                end
+            end
+
+            sj.add_byte(0)
+        end
+
+        make_skip(0x100 * 4)
+
+        make_page(0x0040, {
+            { " CODE: RESTORER ", 1, -1, 1, 7 }
+        })
+
+        make_page(0x0040, {
+            { " MUSIC: FATALSNIPE ", 5, -1, 1, 7 }
+        })
+
+        make_page(0x0040, {
+            { " CODE: RESTORER ", 1, -1, 1, 7 },
+            { " MUSIC: FATALSNIPE ", 5, -1, 1, 7 }
+        })
+
+        make_page(0x0040, {
+            { " MUSIC: FATALSNIPE ", 1, -1, 1, 7 },
+            { " CODE: RESTORER ", 5, -1, 1, 7 }
+        })
+
+    endlua
 
     dw 0 : dw pages
 
