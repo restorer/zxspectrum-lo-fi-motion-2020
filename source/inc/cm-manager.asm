@@ -106,188 +106,117 @@ dummy_func
 ;-----------------------------------------------------------------------------------------------------------------------
 
 scenes
-    ; dw #4000 : db @bank_eff_bigpic
-    ; dw dummy_func : db 0 : dw dummy_func : dw @eff_bigpic.render
+    lua allpass
+        function make_effect(duration, name, strength)
+            sj.add_word(duration)
+            sj.parse_code("db @bank_eff_" .. name)
+            sj.parse_code("dw @eff_" .. name .. ".enter")
 
-    dw #0100 : db @bank_eff_raskolbas
-    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_1 : dw dummy_func : dw @eff_raskolbas.render
+            if strength > 0 then
+                sj.parse_code("db @eff_" .. name .. ".cfg_strength_" .. strength)
+            else
+                sj.add_byte(0)
+            end
 
-    dw #0100 : db @bank_eff_raskolbas
-    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_2 : dw dummy_func : dw @eff_raskolbas.render
+            sj.parse_code("dw @eff_" .. name .. ".leave")
+            sj.parse_code("dw @eff_" .. name .. ".render")
+        end
 
-    dw #0100 : db @bank_eff_raskolbas
-    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_3 : dw dummy_func : dw @eff_raskolbas.render
+        make_effect(0x0100, "raskolbas", 1)
+        make_effect(0x0100, "raskolbas", 2)
+        make_effect(0x0100, "raskolbas", 3)
+        make_effect(0x0100, "raskolbas", 4)
 
-    dw #0100 : db @bank_eff_raskolbas
-    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_4 : dw dummy_func : dw @eff_raskolbas.render
+        --
 
-    ;;;;
+        make_effect(0x0100, "slime", 1)
 
-    dw #0100 : db @bank_eff_slime
-    dw @eff_slime.enter : db @eff_slime.cfg_strength_1 : dw dummy_func : dw @eff_slime.render
+        make_effect(0x0080, "fire", 1)
+        make_effect(0x0080, "fire", 2)
 
-    dw #0080 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_1 : dw dummy_func : dw @eff_fire.render
+        make_effect(0x0080, "slime", 2)
+        make_effect(0x0080, "slime", 3)
 
-    dw #0080 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_2 : dw dummy_func : dw @eff_fire.render
+        make_effect(0x0080, "fire", 3)
+        make_effect(0x0040, "fire", 2)
+        make_effect(0x0040, "fire", 1)
 
-    dw #0080 : db @bank_eff_slime
-    dw @eff_slime.enter : db @eff_slime.cfg_strength_2 : dw dummy_func : dw @eff_slime.render
+        --
 
-    dw #0080 : db @bank_eff_slime
-    dw @eff_slime.enter : db @eff_slime.cfg_strength_3 : dw dummy_func : dw @eff_slime.render
+        make_effect(0x0100, "raskolbas", 5)
+        make_effect(0x0100, "interp", 2)
 
-    dw #0080 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_3 : dw dummy_func : dw @eff_fire.render
+        --
 
-    dw #0040 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_2 : dw dummy_func : dw @eff_fire.render
+        make_effect(0x0100, "plasma", 2)
+        make_effect(0x0100, "interp", 1)
+        make_effect(0x0100, "plasma", 1)
+        make_effect(0x0100, "interp", 3)
 
-    dw #0040 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_1 : dw dummy_func : dw @eff_fire.render
+        --
 
-    ;;;;
+        make_effect(0x0100, "rain", 1)
+        make_effect(0x0100, "rain", 2)
+        make_effect(0x0100, "logo", 0)
 
-    dw #0100 : db @bank_eff_raskolbas
-    dw @eff_raskolbas.enter : db @eff_raskolbas.cfg_strength_5 : dw dummy_func : dw @eff_raskolbas.render
+        make_effect(0x0080, "burb", 2)
+        make_effect(0x0080, "burb", 1)
 
-    dw #0100 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_2 : dw dummy_func : dw @eff_interp.render
+        --
 
-    ;;;;
+        make_effect(0x0200, "dina", 1)
+        make_effect(0x0200, "rtzoomer", 2)
 
-    dw #0100 : db @bank_eff_plasma
-    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_2 : dw dummy_func : dw @eff_plasma.render
+        --
 
-    dw #0100 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_1 : dw dummy_func : dw @eff_interp.render
+        make_effect(0x0080, "rbars", 1)
+        make_effect(0x0080, "rbars", 2)
+        make_effect(0x0100, "dina", 2)
 
-    dw #0100 : db @bank_eff_plasma
-    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_1 : dw dummy_func : dw @eff_plasma.render
+        make_effect(0x0100, "rtzoomer", 1)
+        make_effect(0x0080, "rbars", 3)
+        make_effect(0x0080, "rbars", 4)
 
-    dw #0100 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_3 : dw dummy_func : dw @eff_interp.render
+        --
 
-    ;;;;
+        make_effect(0x0200, "bigpic", 0)
 
-    dw #0100 : db @bank_eff_rain
-    dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_func : dw @eff_rain.render
+        make_effect(0x0080, "plasma", 2)
+        make_effect(0x0080, "interp", 1)
+        make_effect(0x0080, "plasma", 1)
+        make_effect(0x0040, "interp", 3)
+        make_effect(0x0040, "rain", 1)
 
-    dw #0100 : db @bank_eff_rain
-    dw @eff_rain.enter : db @eff_rain.cfg_strength_2 : dw dummy_func : dw @eff_rain.render
+        --
 
-    dw #0100 : db 0
-    dw @eff_logo.enter : db 0 : dw @eff_logo.leave : dw @eff_logo.render
+        make_effect(0x0040, "slime", 3)
+        make_effect(0x0020, "slime", 2)
+        make_effect(0x0020, "slime", 1)
 
-    dw #0080 : db @bank_eff_burb
-    dw @eff_burb.enter : db @eff_burb.cfg_strength_2 : dw dummy_func : dw @eff_burb.render
+        make_effect(0x0040, "plasma", 2)
+        make_effect(0x0040, "plasma", 1)
 
-    dw #0080 : db @bank_eff_burb
-    dw @eff_burb.enter : db @eff_burb.cfg_strength_1 : dw dummy_func : dw @eff_burb.render
+        make_effect(0x0040, "fire", 3)
+        make_effect(0x0020, "fire", 2)
+        make_effect(0x0020, "fire", 1)
 
-    ;;;;
+        make_effect(0x0040, "interp", 3)
+        make_effect(0x0020, "interp", 2)
+        make_effect(0x0020, "interp", 1)
 
-    dw #0200 : db @bank_eff_dina
-    dw @eff_dina.enter : db @eff_dina.cfg_strength_1 : dw dummy_func : dw @eff_dina.render
+        sj.parse_line(".loop")
 
-    dw #0200 : db @bank_eff_rtzoomer
-    dw @eff_rtzoomer.enter : db @eff_rtzoomer.cfg_strength_2 : dw dummy_func : dw @eff_rtzoomer.render
+        make_effect(0x0100, "rain", 2)
+        make_effect(0x0100, "rain", 1)
 
-    dw #0080 : db @bank_eff_rbars
-    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_1 : dw dummy_func : dw @eff_rbars.render
+        --
 
-    dw #0080 : db @bank_eff_rbars
-    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_2 : dw dummy_func : dw @eff_rbars.render
+        make_effect(0x100, "dina", 1)
+        make_effect(0x100, "rtzoomer", 2)
+        make_effect(0x100, "dina", 2)
+        make_effect(0x100, "rtzoomer", 1)
 
-    dw #0100 : db @bank_eff_dina
-    dw @eff_dina.enter : db @eff_dina.cfg_strength_2 : dw dummy_func : dw @eff_dina.render
-
-    dw #0100 : db @bank_eff_rtzoomer
-    dw @eff_rtzoomer.enter : db @eff_rtzoomer.cfg_strength_1 : dw dummy_func : dw @eff_rtzoomer.render
-
-    dw #0080 : db @bank_eff_rbars
-    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_3 : dw dummy_func : dw @eff_rbars.render
-
-    dw #0080 : db @bank_eff_rbars
-    dw @eff_rbars.enter : db @eff_rbars.cfg_strength_4 : dw dummy_func : dw @eff_rbars.render
-
-    ;;;;
-
-    dw #0200 : db @bank_eff_bigpic
-    dw dummy_func : db 0 : dw dummy_func : dw @eff_bigpic.render
-
-    dw #0080 : db @bank_eff_plasma
-    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_2 : dw dummy_func : dw @eff_plasma.render
-
-    dw #0080 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_1 : dw dummy_func : dw @eff_interp.render
-
-    dw #0080 : db @bank_eff_plasma
-    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_1 : dw dummy_func : dw @eff_plasma.render
-
-    dw #0040 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_3 : dw dummy_func : dw @eff_interp.render
-
-    dw #0040 : db @bank_eff_rain
-    dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_func : dw @eff_rain.render
-
-    ;;;;
-
-    dw #0040 : db @bank_eff_slime
-    dw @eff_slime.enter : db @eff_slime.cfg_strength_3 : dw dummy_func : dw @eff_slime.render
-
-    dw #0020 : db @bank_eff_slime
-    dw @eff_slime.enter : db @eff_slime.cfg_strength_2 : dw dummy_func : dw @eff_slime.render
-
-    dw #0020 : db @bank_eff_slime
-    dw @eff_slime.enter : db @eff_slime.cfg_strength_1 : dw dummy_func : dw @eff_slime.render
-
-    dw #0040 : db @bank_eff_plasma
-    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_2 : dw dummy_func : dw @eff_plasma.render
-
-    dw #0040 : db @bank_eff_plasma
-    dw @eff_plasma.enter : db @eff_plasma.cfg_strength_1 : dw dummy_func : dw @eff_plasma.render
-
-    dw #0040 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_3 : dw dummy_func : dw @eff_fire.render
-
-    dw #0020 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_2 : dw dummy_func : dw @eff_fire.render
-
-    dw #0020 : db @bank_eff_fire
-    dw @eff_fire.enter : db @eff_fire.cfg_strength_1 : dw dummy_func : dw @eff_fire.render
-
-    dw #0040 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_3 : dw dummy_func : dw @eff_interp.render
-
-    dw #0020 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_2 : dw dummy_func : dw @eff_interp.render
-
-    dw #0020 : db @bank_eff_interp
-    dw @eff_interp.enter : db @eff_interp.cfg_strength_1 : dw dummy_func : dw @eff_interp.render
-
-.loop
-
-    dw #0100 : db @bank_eff_rain
-    dw @eff_rain.enter : db @eff_rain.cfg_strength_2 : dw dummy_func : dw @eff_rain.render
-
-    dw #0100 : db @bank_eff_rain
-    dw @eff_rain.enter : db @eff_rain.cfg_strength_1 : dw dummy_func : dw @eff_rain.render
-
-    ;;;;
-
-    dw #0100 : db @bank_eff_dina
-    dw @eff_dina.enter : db @eff_dina.cfg_strength_1 : dw dummy_func : dw @eff_dina.render
-
-    dw #0100 : db @bank_eff_dina
-    dw @eff_dina.enter : db @eff_dina.cfg_strength_2 : dw dummy_func : dw @eff_dina.render
-
-    dw #0100 : db @bank_eff_dina
-    dw @eff_dina.enter : db @eff_dina.cfg_strength_1 : dw dummy_func : dw @eff_dina.render
-
-    dw #0100 : db @bank_eff_dina
-    dw @eff_dina.enter : db @eff_dina.cfg_strength_2 : dw dummy_func : dw @eff_dina.render
+    endlua
 
     dw 0 : dw scenes.loop
 

@@ -25,6 +25,8 @@
 
 @core_rows equ 32 ; 32 or 48
 
+@bank_eff_logo equ 0 ; not in bank
+
 @bank_player equ 0
 @bank_eff_burb equ 0
 @bank_eff_fire equ 0

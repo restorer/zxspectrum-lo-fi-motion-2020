@@ -192,19 +192,116 @@ pages
             sj.add_byte(0)
         end
 
-        make_skip(0x100 * 8)
+        make_skip(0x0100 * 8)
 
-        make_page(0x0100, {
-            { " CODE: RESTORER ", 1, -1, 1, 7 }
-        })
+        make_page(0x0040, { { " 0 ", 3, -1, 0, 7 } })
+        make_page(0x0040, { { " 1 ", 3, -1, 1, 7 } })
+        make_page(0x0040, { { " 2 ", 3, -1, 2, 7 } })
+        make_page(0x0040, { { " 3 ", 3, -1, 3, 7 } })
+        make_page(0x0040, { { " 4 ", 3, -1, 4, 0 } })
+        make_page(0x0040, { { " 5 ", 3, -1, 5, 0 } })
+        make_page(0x0040, { { " 6 ", 3, -1, 6, 0 } })
+        make_page(0x0040, { { " 7 ", 3, -1, 7, 0 } })
 
-        make_page(0x0100, {
-            { " MUSIC: FATALSNIPE ", 5, -1, 1, 7 }
-        })
+        make_skip(0x0100 * 8)
+
+        make_page(0x0080, { { " 0 ", 3, -1, 0, 7 } })
+        make_page(0x0080, { { " 1 ", 3, -1, 1, 7 } })
+        make_page(0x0080, { { " 2 ", 3, -1, 2, 7 } })
+        make_page(0x0080, { { " 3 ", 3, -1, 3, 7 } })
+        make_page(0x0080, { { " 4 ", 3, -1, 4, 0 } })
+        make_page(0x0080, { { " 5 ", 3, -1, 5, 0 } })
+        make_page(0x0080, { { " 6 ", 3, -1, 6, 0 } })
+        make_page(0x0080, { { " 7 ", 3, -1, 7, 0 } })
+
+        make_skip(0x0200 * 4)
+
+        make_page(0x0080, { { " 0 ", 3, -1, 0, 7 } })
+        make_page(0x0080, { { " 1 ", 3, -1, 1, 7 } })
+        make_page(0x0080, { { " 2 ", 3, -1, 2, 7 } })
+        make_page(0x0080, { { " 3 ", 3, -1, 3, 7 } })
+
+        sj.parse_line(".loop")
+
+        make_page(0x0080, { { " LOOP: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0080, { { " LOOP: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0080, { { " LOOP: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0080, { { " LOOP: 3 ", 3, -1, 3, 7 } })
+
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+        make_page(0x0010, { { " GREETZ: 0 ", 3, -1, 0, 7 } })
+        make_page(0x0010, { { " GREETZ: 1 ", 3, -1, 1, 7 } })
+        make_page(0x0010, { { " GREETZ: 2 ", 3, -1, 2, 7 } })
+        make_page(0x0010, { { " GREETZ: 3 ", 3, -1, 3, 7 } })
+        make_page(0x0010, { { " GREETZ: 4 ", 3, -1, 4, 0 } })
+        make_page(0x0010, { { " GREETZ: 5 ", 3, -1, 5, 0 } })
+        make_page(0x0010, { { " GREETZ: 6 ", 3, -1, 6, 0 } })
+        make_page(0x0010, { { " GREETZ: 7 ", 3, -1, 7, 0 } })
+
+        -- make_page(0x0100, { { " CODE: RESTORER ", 1, -1, 1, 7 } })
+        -- make_page(0x0100, { { " MUSIC: FATALSNIPE ", 5, -1, 1, 7 } })
 
     endlua
 
-    dw 0 : dw pages
+    dw 0 : dw pages.loop
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
