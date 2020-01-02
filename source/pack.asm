@@ -39,7 +39,3 @@ data_last
         labelslist "_build/pack.l"
 
         savebin "_build/lfm-pack.bin", @entry, @data_last-@entry
-
-        ; emptytrd "_build/prezu.trd"
-        ; savetrd "_build/prezu.trd", "main.C", @first, @last-first
-        ; page 0 : savetrd "_build/zu.trd", "bank_0.C", #c000, @bank_0_last-#c000

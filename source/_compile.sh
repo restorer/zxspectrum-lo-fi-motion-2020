@@ -20,6 +20,8 @@ mkdir -p _build
 [ -e _build/pack-output.log ] && rm _build/pack-output.log
 [ -e _build/pack.sna ] && rm _build/pack.sna
 
+[ -e _build/pack.sna ] && rm _build/lfm.tap
+
 sjasmplus main.asm > _build/main-output.log
 RES="$?"
 [ -e _build/main-output.log ] && echo "----" && cat _build/main-output.log && echo "----"
@@ -35,12 +37,11 @@ if [ "$1" = "--pack" ] || [ "$2" = "--pack" ] ; then
     [ -e _build/pack-output.log ] && echo "----" && cat _build/pack-output.log && echo "----"
     [ $RES != "0" ] && exit
 
-    if [ "$1" != "--norun" ] && [ "$2" != "--norun" ] ; then
-        [ -e _build/pack.sna ] && zemu -l _build/pack.l _build/pack.sna
-    fi
+    # if [ "$1" != "--norun" ] && [ "$2" != "--norun" ] ; then
+    #     [ -e _build/pack.sna ] && zemu -l _build/pack.l _build/pack.sna
+    # fi
 
-    # [ -e _build/pack.sna ] && zemu -l _build/pack.l _build/pack.sna
-    # ruby tapmaker.rb
+    ruby tapmaker.rb
 elif [ "$1" != "--norun" ] ; then
     [ -e _build/main.sna ] && zemu -l _build/main.l _build/main.sna
 fi
