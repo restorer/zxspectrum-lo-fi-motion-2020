@@ -22,6 +22,10 @@
     savesna "../_build/main.sna", @entry
     labelslist "../_build/main.l"
 
+    savebin "../_build/lfm-main.bin", @first, @last-@first
+    page 0 : savebin "../_build/lfm-page0.bin", #c000, @bank_0_last-#c000
+    page 1 : savebin "../_build/lfm-page1.bin", #c000, @bank_1_last-#c000
+
 ;-----------------------------------------------------------------------------------------------------------------------
 
     endmodule

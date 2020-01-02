@@ -164,6 +164,17 @@ clear_pixels
 pages
     lua allpass
 
+        __rand_seed = 4314110594
+
+        function rand_init(seed)
+            __rand_seed = seed
+        end
+
+        function rand_next()
+            __rand_seed = (__rand_seed * 0x05deece66d + 0x0b) % 0x1000000000000
+            return __rand_seed / 0x1000000000000
+        end
+
         function make_skip(duration)
             sj.add_word(duration)
             sj.add_byte(0)
@@ -185,14 +196,6 @@ pages
                     x = math.floor((32 - str_len) / 2) + x_off
                 end
 
-                if x < 0 then
-                    x = 0
-                end
-
-                if x + str_len > 32 then
-                    x = 32 - str_len
-                end
-
                 sj.add_byte(str_len)
                 sj.add_byte(y * 32 + x)
                 sj.add_byte(paper * 8 + ink)
@@ -203,6 +206,23 @@ pages
             end
 
             sj.add_byte(0)
+        end
+
+        function make_page_rnd(duration, str)
+            str = " " .. str .. " "
+
+            local y = math.floor(rand_next() * (3 + 1)) * 2
+            local x = math.floor(rand_next() * (28 - str:len() + 1)) + 2
+            local paper = math.floor(rand_next() * 7)
+            local ink
+
+            if paper < 4 then
+                ink = 7
+            else
+                ink = 0
+            end
+
+            make_page(duration, { { str, y, -100 - x, paper, ink } })
         end
 
         make_skip(0x0100 * 8)
@@ -269,8 +289,8 @@ pages
         make_page(0x0008, { { " PRESENT ", 3, 0, 7, 0 } })
         make_page(0x0048, { { " PRESENTS ", 3, 0, 7, 0 } })
 
-        make_page(0x0020, { { " A NEW DEMO ", 3, 0, 2, 7 } })
-        make_page(0x0020, { { " A NEW DEMO ", 1, 0, 2, 7 }, { " ESPECIALLY FOR ", 5, 0, 5, 0 } })
+        make_page(0x0020, { { " A NEW DEMO ", 0, 0, 2, 7 } })
+        make_page(0x0020, { { " A NEW DEMO ", 0, 0, 2, 7 }, { " ESPECIALLY FOR ", 3, 0, 5, 0 } })
         make_page(0x0040, { { " A NEW DEMO ", 0, 0, 2, 7 }, { " ESPECIALLY FOR ", 3, 0, 5, 0 }, { " DIHALT WINTER 2020 ", 6, 0, 1, 7 } })
 
         make_page(0x0020, { { " LO ", 3, -7, 0, 7 } })
@@ -297,7 +317,7 @@ pages
 
         make_skip(0x0200 * 4)
 
-        make_page(0x0080, { { " LEAVES HAS FALLEN ", 3, -102, 3, 7 } })
+        make_page(0x0080, { { " LEAVES HAVE FALLEN ", 3, -102, 3, 7 } })
         make_page(0x0080, { { " EFFECTS HAVE BEEN SHOWN ", 3, -104, 1, 7 } })
         make_page(0x0080, { { " TIME HAS COME ", 3, 106, 2, 7 } })
         make_page(0x0080, { { " THE DEMO IS OVER ", 3, 102, 0, 7 } })
@@ -309,70 +329,70 @@ pages
         make_page(0x0080, { { " SEND GREETZ ", 4, 0, 3, 7 } })
         make_page(0x0080, { { " TO THE LEGENDS ", 6, 0, 1, 7 } })
 
-        make_page(0x0010, { { " CODE BUSTERS ", 6, 8, 1, 7 } })
-        make_page(0x0010, { { " RST#7 ", 0, 1, 3, 7 } })
-        make_page(0x0010, { { " MAX IWAMOTO ", 5, -5, 2, 7 } })
-        make_page(0x0010, { { " KLAV ", 2, 5, 3, 7 } })
-        make_page(0x0010, { { " VASILYEV ANTON ", 5, 6, 4, 0 } })
-        make_page(0x0010, { { " MKHG ", 6, 4, 2, 7 } })
-        make_page(0x0010, { { " KANO ", 6, 3, 7, 0 } })
-        make_page(0x0010, { { " KSA ", 0, -7, 5, 0 } })
-        make_page(0x0010, { { " AIG ", 1, -2, 3, 7 } })
-        make_page(0x0010, { { " TITOV ANDREI ", 3, -4, 0, 7 } })
-        make_page(0x0010, { { " AGAEV ELDAR ", 4, 7, 7, 0 } })
-        make_page(0x0010, { { " DIGIRAL REALITY ", 6, -8, 1, 7 } })
-        make_page(0x0010, { { " FLYING ", 1, -2, 4, 0 } })
-        make_page(0x0010, { { " ARTY ", 0, 0, 2, 7 } })
-        make_page(0x0010, { { " TERROR ", 6, -4, 2, 7 } })
-        make_page(0x0010, { { " CYBER STRYKE ", 4, 5, 4, 0 } })
-        make_page(0x0010, { { " DEN ", 0, 2, 7, 0 } })
-        make_page(0x0010, { { " JOE ", 5, -8, 0, 7 } })
-        make_page(0x0010, { { " SAURON ", 5, -4, 7, 0 } })
-        make_page(0x0010, { { " DIVER ", 6, 5, 2, 7 } })
-        make_page(0x0010, { { " DMS ", 3, 6, 5, 0 } })
-        make_page(0x0010, { { " IMP ", 3, 4, 0, 7 } })
-        make_page(0x0010, { { " SHAMAN ", 1, 8, 0, 7 } })
-        make_page(0x0010, { { " EVOLVER ", 1, 0, 0, 7 } })
-        make_page(0x0010, { { " NAVIGATOR ", 3, -7, 7, 0 } })
-        make_page(0x0010, { { " ELF ", 2, 2, 4, 0 } })
-        make_page(0x0010, { { " VIATOR ", 4, -5, 4, 0 } })
-        make_page(0x0010, { { " ESA ", 1, 1, 4, 0 } })
-        make_page(0x0010, { { " SAISOFT ", 2, 6, 6, 0 } })
-        make_page(0x0010, { { " FACTOR 6 ", 0, -2, 6, 0 } })
-        make_page(0x0010, { { " ESI ", 1, -5, 3, 7 } })
-        make_page(0x0010, { { " CAT-MAN ", 5, -7, 6, 0 } })
-        make_page(0x0010, { { " JANCO ", 1, 7, 0, 7 } })
-        make_page(0x0010, { { " KASSOFT ", 4, 4, 3, 7 } })
-        make_page(0x0010, { { " KAZ ", 3, -3, 7, 0 } })
-        make_page(0x0010, { { " MAT ", 1, 2, 5, 0 } })
-        make_page(0x0010, { { " MUAD'DIB ", 5, 1, 5, 0 } })
-        make_page(0x0010, { { " RACKNE ", 4, 7, 6, 0 } })
-        make_page(0x0010, { { " SABE ", 4, -4, 1, 7 } })
-        make_page(0x0010, { { " ZIUTEK ", 3, -5, 1, 7 } })
-        make_page(0x0010, { { " XTM ", 4, -1, 2, 7 } })
-        make_page(0x0010, { { " MAGIC ", 4, -8, 7, 0 } })
-        make_page(0x0010, { { " TEERAY ", 3, -1, 4, 0 } })
-        make_page(0x0010, { { " VISUAL ", 6, -6, 5, 0 } })
-        make_page(0x0010, { { " MAC BUSTER ", 2, -3, 6, 0 } })
-        make_page(0x0010, { { " SLIDER ", 6, -6, 4, 0 } })
-        make_page(0x0010, { { " MONK ", 3, 1, 2, 7 } })
-        make_page(0x0010, { { " NOY ", 0, -6, 6, 0 } })
-        make_page(0x0010, { { " DWARF ", 4, -2, 5, 0 } })
-        make_page(0x0010, { { " ASHAR ", 2, 0, 1, 7 } })
-        make_page(0x0010, { { " GOBLIN ", 2, -6, 3, 7 } })
-        make_page(0x0010, { { " EXPLODER ", 0, 4, 1, 7 } })
-        make_page(0x0010, { { " SNAKE ", 2, -3, 5, 0 } })
-        make_page(0x0010, { { " SAT ", 6, 5, 5, 0 } })
-        make_page(0x0010, { { " TOX ", 2, -3, 0, 7 } })
-        make_page(0x0010, { { " SCAR ", 0, 3, 6, 0 } })
-        make_page(0x0010, { { " UNBELIVER ", 5, 2, 6, 0 } })
-        make_page(0x0010, { { " DR. DEATH ", 1, -1, 1, 7 } })
-        make_page(0x0010, { { " MAXSOFT ", 0, 3, 0, 7 } })
-        make_page(0x0010, { { " FATALITY ", 2, 3, 1, 7 } })
-        make_page(0x0010, { { " FREEMAN ", 3, -1, 3, 7 } })
-        make_page(0x0010, { { " MAST ", 0, 0, 3, 7 } })
-        make_page(0x0010, { { " AIS ", 5, 8, 2, 7 } })
-        make_page(0x0010, { { " FOX FLUFFY'S ", 5, 6, 7, 0 } })
+        make_page_rnd(0x0010, "COPPERFEET")
+        make_page_rnd(0x0010, "BILL GILBERT")
+        make_page_rnd(0x0010, "RST#7")
+        make_page_rnd(0x0010, "MAX IWAMOTO")
+        make_page_rnd(0x0010, "KLAV")
+        make_page_rnd(0x0010, "VASILYEV ANTON")
+        make_page_rnd(0x0010, "KANO")
+        make_page_rnd(0x0010, "KSA")
+        make_page_rnd(0x0010, "AIG")
+        make_page_rnd(0x0010, "TITOV ANDREI")
+        make_page_rnd(0x0010, "BUSY")
+        make_page_rnd(0x0010, "NORO")
+        make_page_rnd(0x0010, "KAZ")
+        make_page_rnd(0x0010, "MAT")
+        make_page_rnd(0x0010, "MUAD'DIB")
+        make_page_rnd(0x0010, "RACKNE")
+        make_page_rnd(0x0010, "ZIUTEK")
+        make_page_rnd(0x0010, "FREEMAN")
+        make_page_rnd(0x0010, "MAST")
+        make_page_rnd(0x0010, "IMP")
+        make_page_rnd(0x0010, "SHAMAN")
+        make_page_rnd(0x0010, "VMP")
+        make_page_rnd(0x0010, "STALKER")
+        make_page_rnd(0x0010, "KVA")
+        make_page_rnd(0x0010, "RUM")
+        make_page_rnd(0x0010, "SCRATCHER")
+        make_page_rnd(0x0010, "EXPLODER")
+        make_page_rnd(0x0010, "SNAKE")
+        make_page_rnd(0x0010, "FLYING")
+        make_page_rnd(0x0010, "ARTY")
+        make_page_rnd(0x0010, "TERROR")
+        make_page_rnd(0x0010, "JOE")
+        make_page_rnd(0x0010, "SAURON")
+        make_page_rnd(0x0010, "DIVER")
+        make_page_rnd(0x0010, "VIATOR")
+        make_page_rnd(0x0010, "FACTOR 6")
+        make_page_rnd(0x0010, "CAT-MAN")
+        make_page_rnd(0x0010, "MAGIC")
+        make_page_rnd(0x0010, "TEERAY")
+        make_page_rnd(0x0010, "VISUAL")
+        make_page_rnd(0x0010, "VOXON")
+        make_page_rnd(0x0010, "EVOLVER")
+        make_page_rnd(0x0010, "PARACELS")
+        make_page_rnd(0x0010, "SAIROOS")
+        make_page_rnd(0x0010, "DMAN")
+        make_page_rnd(0x0010, "SPY")
+        make_page_rnd(0x0010, "AGENT-X")
+        make_page_rnd(0x0010, "JORDAN")
+        make_page_rnd(0x0010, "EA")
+        make_page_rnd(0x0010, "MMCM")
+        make_page_rnd(0x0010, "TANKARD")
+        make_page_rnd(0x0010, "DOC")
+        make_page_rnd(0x0010, "ROM")
+        make_page_rnd(0x0010, "FUX")
+        make_page_rnd(0x0010, "MIC")
+        make_page_rnd(0x0010, "KOLVER")
+        make_page_rnd(0x0010, "DARK")
+        make_page_rnd(0x0010, "FYREX")
+        make_page_rnd(0x0010, "WOLF")
+        make_page_rnd(0x0010, "GANS")
+        make_page_rnd(0x0010, "FLYER")
+        make_page_rnd(0x0010, "UNBELIVER")
+        make_page_rnd(0x0010, "MAXSOFT")
+        make_page_rnd(0x0010, "MONSTER")
 
     endlua
 
